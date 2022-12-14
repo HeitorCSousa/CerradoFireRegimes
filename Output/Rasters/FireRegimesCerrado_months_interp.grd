@@ -1,0 +1,19 @@
+[general]
+[georeference]
+nrows=447
+ncols=372
+xmin=-60.1000000000000014
+ymin=-24.6999999999999993
+xmax=-41.5
+ymax=-2.35000000000000009
+projection=+proj=longlat +datum=WGS84 +no_defs
+[data]
+datatype=FLT4S
+nodatavalue=nan
+byteorder=little
+nbands=1
+minvalue=0
+maxvalue=2
+categorical=FALSE
+[description]
+layername=focal_modal
