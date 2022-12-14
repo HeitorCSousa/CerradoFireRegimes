@@ -1,0 +1,26 @@
+[general]
+creator=R package 'raster'
+created=2022-12-03 17:06:49
+[data]
+datatype=FLT4S
+byteorder=little
+nbands=12
+bandorder=BIL
+minvalue=0:0:0:0:0:0:0:0:0:0:0:0
+maxvalue=447.213592529297:447.213592529297:447.213592529297:447.213592529297:447.213592529297:447.213592529297:447.213592529297:447.213592529297:447.213592529297:447.213592529297:447.213592529297:447.213592529297
+nodatavalue=-3.4e+38
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=layer.1:layer.2:layer.3:layer.4:layer.5:layer.6:layer.7:layer.8:layer.9:layer.10:layer.11:layer.12
+[georeference]
+nrows=5367
+ncols=4461
+xmin=-60.112499995
+ymin=-24.687499998
+xmax=-41.524999997
+ymax=-2.325
+projection=+proj=longlat +datum=WGS84 +no_defs
+wkt=GEOGCRS["WGS 84 (with axis order normalized for visualization)",    DATUM["World Geodetic System 1984",        ELLIPSOID["WGS 84",6378137,298.257223563,            LENGTHUNIT["metre",1]]],    PRIMEM["Greenwich",0,        ANGLEUNIT["degree",0.0174532925199433]],    CS[ellipsoidal,2],        AXIS["geodetic longitude (Lon)",east,            ORDER[1],            ANGLEUNIT["degree",0.0174532925199433,                ID["EPSG",9122]]],        AXIS["geodetic latitude (Lat)",north,            ORDER[2],            ANGLEUNIT["degree",0.0174532925199433,                ID["EPSG",9122]]],    REMARK["Axis order reversed compared to EPSG:4326"]]
