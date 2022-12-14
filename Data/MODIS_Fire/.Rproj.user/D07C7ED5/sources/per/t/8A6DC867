@@ -1,0 +1,26 @@
+{
+    "id": "8A6DC867",
+    "path": "/Volumes/Extreme SSD/Heitor/BD_SIG/MODIS_Fire/Script_MODIS_Fire.R",
+    "project_path": "Script_MODIS_Fire.R",
+    "type": "r_source",
+    "hash": "3189986687",
+    "contents": "",
+    "dirty": false,
+    "created": 1659967691337.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "938,69",
+        "scrollLine": "922"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1670098013,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1670098013406,
+    "read_only": false,
+    "read_only_alternatives": []
+}

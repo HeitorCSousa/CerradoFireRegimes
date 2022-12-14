@@ -1,0 +1,25 @@
+{
+    "id": "A0C4E8E8",
+    "path": "E:/Heitor/BD_SIG/MODIS_Fire/Script_MODIS_Fire.R",
+    "project_path": "Script_MODIS_Fire.R",
+    "type": "r_source",
+    "hash": "121936340",
+    "contents": "",
+    "dirty": true,
+    "created": 1610650203573.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "cursorPosition": "132,14",
+        "scrollLine": "195",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1630870402,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1638357627741,
+    "read_only": false,
+    "read_only_alternatives": []
+}
