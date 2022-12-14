@@ -1,0 +1,66 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <Description>layer.1</Description>
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">0.25</MDI>
+      <MDI key="STATISTICS_MEAN">0.0010818411052073</MDI>
+      <MDI key="STATISTICS_MINIMUM">0</MDI>
+      <MDI key="STATISTICS_STDDEV">0.0058700111302596</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">41.27</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="2">
+    <Description>layer.2</Description>
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">0.13888889551163</MDI>
+      <MDI key="STATISTICS_MEAN">0.00099441960202461</MDI>
+      <MDI key="STATISTICS_MINIMUM">0</MDI>
+      <MDI key="STATISTICS_STDDEV">0.00560162673882</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">41.27</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="3">
+    <Description>layer.3</Description>
+  </PAMRasterBand>
+  <PAMRasterBand band="4">
+    <Description>layer.4</Description>
+  </PAMRasterBand>
+  <PAMRasterBand band="5">
+    <Description>layer.5</Description>
+  </PAMRasterBand>
+  <PAMRasterBand band="6">
+    <Description>layer.6</Description>
+  </PAMRasterBand>
+  <PAMRasterBand band="7">
+    <Description>layer.7</Description>
+  </PAMRasterBand>
+  <PAMRasterBand band="8">
+    <Description>layer.8</Description>
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">1</MDI>
+      <MDI key="STATISTICS_MEAN">0.23009663462602</MDI>
+      <MDI key="STATISTICS_MINIMUM">0</MDI>
+      <MDI key="STATISTICS_STDDEV">0.23197435579061</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">41.27</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="9">
+    <Description>layer.9</Description>
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">1</MDI>
+      <MDI key="STATISTICS_MEAN">0.21050976605017</MDI>
+      <MDI key="STATISTICS_MINIMUM">0</MDI>
+      <MDI key="STATISTICS_STDDEV">0.20775600094342</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">41.27</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="10">
+    <Description>layer.10</Description>
+  </PAMRasterBand>
+  <PAMRasterBand band="11">
+    <Description>layer.11</Description>
+  </PAMRasterBand>
+  <PAMRasterBand band="12">
+    <Description>layer.12</Description>
+  </PAMRasterBand>
+</PAMDataset>
