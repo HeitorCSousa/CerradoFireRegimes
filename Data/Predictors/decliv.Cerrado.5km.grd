@@ -1,0 +1,26 @@
+[general]
+creator=R package 'raster'
+created=2021-08-19 03:00:19
+[georeference]
+nrows=447
+ncols=372
+xmin=-60.1
+ymin=-24.7
+xmax=-41.5
+ymax=-2.35
+projection=+proj=longlat +datum=WGS84 +no_defs
+[data]
+datatype=FLT4S
+byteorder=little
+nbands=1
+bandorder=BIL
+categorical=FALSE
+minvalue=0.632904171943665
+maxvalue=23.6377201080322
+nodatavalue=-3.4e+38
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=bioma_cerrado_declividade
