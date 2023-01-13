@@ -31,7 +31,7 @@ plot(BA.all.LTDR[[1]])
 #########################
 #Le shapefile do Cerrado#
 #########################
-Cerrado<-readOGR("/Volumes/Extreme SSD/Heitor/BD_SIG/AVHRR_LTDR_Fire/Grid/Cerrado.shp")#Le shapefile
+Cerrado<-readOGR("Data/AVHRR_LTDR_Fire/Grid/Cerrado.shp")#Le shapefile
 plot(BA.all.LTDR[[9]])
 plot(Cerrado,add=T)
 
@@ -197,14 +197,14 @@ setwd("/Volumes/Extreme SSD/Heitor//Doutorado/Analises/Cap1_SpatioTemporal_Fire_
 #Binary raster of burned areas (1=burned; 0=unburned)
 #Temporal resolution: 1982-2018 (except 1994)
 #Spatial resolution: 0.05 degrees (approximately 5 km at the Equator)
-Bbin.all.Cerrado.LTDR<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/AVHRR_LTDR_Fire/Grid/Bbin.all.Cerrado.LTDR.tif")
+Bbin.all.Cerrado.LTDR<-stack("Data/AVHRR_LTDR_Fire/Grid/Bbin.all.Cerrado.LTDR.tif")
 Bbin.all.Cerrado.LTDR
 
 #ALTDR Fire_cci BA v1.0 products (also called FireCCILT10 for short)
 #Raster of burned areas (0-N=burned area in m²; -1=not observed;-2=unburnable,i.e.water,bare land,urban,etc.)
 #Temporal resolution: 1982-2018 (except 1994)
 #Spatial resolution: 0.05 degrees (approximately 5 km at the Equator)
-BA.all.Cerrado.LTDR<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/AVHRR_LTDR_Fire/Grid/BA.all.LTDR.Cerrado.tif")
+BA.all.Cerrado.LTDR<-stack("Data/AVHRR_LTDR_Fire/Grid/BA.all.LTDR.Cerrado.tif")
 BA.all.Cerrado.LTDR
 
 #######################
@@ -215,54 +215,22 @@ BA.all.Cerrado.LTDR
 #Temporal resolution: 1982-2020
 #Spatial resolution: 0.1 degrees (9km)
 
-Cerrado.temp.2m<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_temp_2m.grd")
-Cerrado.skin.temp<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_skin_temp.grd")
-Cerrado.temp.lv1<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_temp_lv1.grd")
-Cerrado.temp.lv2<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_temp_lv2.grd")
-Cerrado.sol<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_sol.grd")
-# Cerrado.evap.soil<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_evap_soil.grd")
-# Cerrado.evap.veg<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Data/Cerrado_Extent/evaporation_from_vegetation_transpiration_1982-01-01_2020-12-31_month.nc")
-# Cerrado.leaf.high<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_leaf_high.grd")
-# Cerrado.leaf.low<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_leaf_low.grd")
-Cerrado.water.lv1<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_water_lv1.grd")
-Cerrado.water.lv2<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_water_lv2.grd")
-Cerrado.precip<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_precip.grd")
-Cerrado.wind<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_wind.grd")
-Cerrado.RH<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_RH.grd")
-Cerrado.total.evap<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_total_evap.grd")
-Cerrado.pot.evap<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_pot_evap.grd")
-Cerrado.water.deficit<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/ERA5/Cerrado_water_deficit.grd")
+Cerrado.temp.2m<-stack("Data/Predictors/ERA5/Cerrado_temp_2m.grd")
+Cerrado.skin.temp<-stack("Data/Predictors/ERA5/Cerrado_skin_temp.grd")
+Cerrado.temp.lv1<-stack("Data/Predictors/ERA5/Cerrado_temp_lv1.grd")
+Cerrado.temp.lv2<-stack("Data/Predictors/ERA5/Cerrado_temp_lv2.grd")
+Cerrado.sol<-stack("Data/Predictors/ERA5/Cerrado_sol.grd")
+Cerrado.water.lv1<-stack("Data/Predictors/ERA5/Cerrado_water_lv1.grd")
+Cerrado.water.lv2<-stack("Data/Predictors/ERA5/Cerrado_water_lv2.grd")
+Cerrado.precip<-stack("Data/Predictors/ERA5/Cerrado_precip.grd")
+Cerrado.wind<-stack("Data/Predictors/ERA5/Cerrado_wind.grd")
+Cerrado.RH<-stack("Data/Predictors/ERA5/Cerrado_RH.grd")
+Cerrado.total.evap<-stack("Data/Predictors/ERA5/Cerrado_total_evap.grd")
+Cerrado.pot.evap<-stack("Data/Predictors/ERA5/Cerrado_pot_evap.grd")
+Cerrado.water.deficit<-stack("Data/Predictors/ERA5/Cerrado_water_deficit.grd")
 
+#Much of the next lines are commented because files are large to provide online. We maintained them here for transparency. We can provide such files with prior contact. However, the next analyses are not dependent on these files
 
-Dir.Base <- getwd() # identifying the current directory
-Dir.Data <- file.path(Dir.Base, "Data") # folder path for data
-Dir.Shapes <- file.path(Dir.Data, "Shapes") # folder path for shapefiles
-Dirs <- sapply(c(Dir.Data, Dir.Shapes), function(x) if (!dir.exists(x)) dir.create(x))
-
-#Read and plot Cerrado area
-CerradoMask <- readOGR("/Volumes/Extreme SSD/Heitor/Doutorado/Analises/Cap1_SpatioTemporal_Fire_Regimes_Cerrado/Data/Shapes/Cerrado.shp", verbose = FALSE) # read
-Dir.CerradoExt <- file.path(Dir.Data, "Cerrado_Extent")
-#dir.create(Dir.CerradoExt)
-
-#####
-#DEM#
-#####
-
-# Covs_ls <- download_DEM(
-#   Train_ras = Cerrado.temp.2m,
-#   Target_res = BA.all.Cerrado.LTDR[[1]],
-#   Dir = Dir.CerradoExt,
-#   Shape = CerradoMask,
-#   Keep_Temporary = TRUE
-# )
-# 
-# windows(20,10)
-# Plot_Covs(Covs_ls,CerradoMask)
-# 
-# Covs_ls[[2]]
-# 
-# writeRaster(Covs_ls[[2]],"DEM_Cerrado_9km.grd")
-#DEM.Cerrado.9km<-raster("DEM_Cerrado_9km.grd")
 # DEM.Cerrado<-raster("/Volumes/Extreme SSD/Heitor/BD_SIG/CSR_UFMG/bioma_cerrado_altitude/bioma_cerrado_altitude.tif")
 # DEM.Cerrado
 # decliv.Cerrado<-raster("/Volumes/Extreme SSD/Heitor/BD_SIG/CSR_UFMG/bioma_cerrado_declividade/bioma_cerrado_declividade.tif")
@@ -441,9 +409,8 @@ plot(VegCerrado.r)
 # plot(tree.cover.Cerrado)
 #endCluster()
 
-#####################
-#Estradas e rodovias#
-#####################
+#Roads#
+#######
 # CerradoRoads <- readOGR(Dir.Shapes,"Roads_Cerrado", verbose = FALSE) # read
 # 
 # # CerradoRoads.dist<-raster("Cerrado_Roads_Dist.tif")
@@ -456,27 +423,9 @@ plot(VegCerrado.r)
 # plot(CerradoRoads.dist)
 #plot(CerradoRoads,add=T)
 
-#########################################
-#Conservation units and indigenous lands#
-#########################################
-Cerrado.UC.PI<-raster("Cerrado_UCs_PI.tif")
-Cerrado.UC.US<-raster("Cerrado_UCs_US.tif")
-Cerrado.TI<-raster("Cerrado_TIs.tif")
-Cerrado.UC.PI
-Cerrado.UC.US
-Cerrado.TI
-windows(10,10)
-plot(CerradoMask)
-plot(Cerrado.UC.US,add=T,col="yellow")
-plot(Cerrado.UC.PI,add=T,col="darkgreen")
 
-windows(10,10)
-plot(CerradoMask)
-plot(Cerrado.TI,add=T,col="green")
-
-##############################################
-#Aggregate to match resolutions - target = 5km#
-##############################################
+#Aggregate to match resolutions - target = 25km#
+################################################
 # DEM.Cerrado
 # decliv.Cerrado
 # beginCluster(4)
@@ -556,9 +505,8 @@ df <- corrplot(cor.m, method = "number")
 fixed.covs.df<-as.data.frame(cov.stack,na.rm=T,xy=T)
 saveRDS(fixed.covs.df,"fixed.covs.df.rds")
 
-#####################################################
-#Check collinearity problems with climatic variables#
-#####################################################
+
+#Aggregate to match resolutions - target = 25km
 beginCluster(4)
 Cerrado.temp.2m<-resample(Cerrado.temp.2m,Bbin.all.Cerrado.LTDR,
                                   filename = "Cerrado.temp.2m.25km.grd",overwrite=T)
@@ -579,8 +527,6 @@ Cerrado.temp.lv2
 Cerrado.sol<-resample(Cerrado.sol,Bbin.all.Cerrado.LTDR,
                            filename = "Cerrado.sol.25km.grd",overwrite=T)
 Cerrado.sol
-# Cerrado.evap.soil
-# Cerrado.evap.veg
 
 Cerrado.water.lv1<-resample(Cerrado.water.lv1,Bbin.all.Cerrado.LTDR,
                             filename = "Cerrado.water.lv1.25km.grd",overwrite=T)
@@ -614,13 +560,12 @@ Cerrado.water.deficit<-resample(Cerrado.water.deficit,Bbin.all.Cerrado.LTDR,
                              filename = "Cerrado.water.deficit.25km.grd",overwrite=T)
 Cerrado.water.deficit
 
+#Transform to data.frame (wide format)
 Cerrado.temp.2m.df<-as.data.frame(Cerrado.temp.2m,na.rm=T,xy=T)
 Cerrado.skin.temp.df<-as.data.frame(Cerrado.skin.temp,na.rm=T,xy=T)
 Cerrado.temp.lv1.df<-as.data.frame(Cerrado.temp.lv1,na.rm=T,xy=T)
 Cerrado.temp.lv2.df<-as.data.frame(Cerrado.temp.lv2,na.rm=T,xy=T)
 Cerrado.sol.df<-as.data.frame(Cerrado.sol,na.rm=T,xy=T)
-# Cerrado.evap.soil.df<-as.data.frame(Cerrado.evap.soil,na.rm=T,xy=T)
-# Cerrado.evap.veg.df<-as.data.frame(Cerrado.evap.veg,na.rm=T,xy=T)
 Cerrado.water.lv1.df<-as.data.frame(Cerrado.water.lv1,na.rm=T,xy=T)
 Cerrado.water.lv2.df<-as.data.frame(Cerrado.water.lv2,na.rm=T,xy=T)
 Cerrado.precip.df<-as.data.frame(Cerrado.precip,na.rm=T,xy=T)
@@ -633,6 +578,7 @@ Cerrado.water.deficit.df<-as.data.frame(Cerrado.water.deficit,na.rm=T,xy=T)
 
 endCluster()
 
+#Transform to long format
 library("dplyr")
 library("tidyr")
 library(lubridate)
@@ -684,6 +630,9 @@ names(cerrado.climate.df)<-c("x","y","Date","temp_2m","Month","Year",
                              "water_lv1","water_lv2",
                              "precip","wind",
                              "RH","total.evap","pot.evap","water.deficit")
+
+#Check collinearity problems with climatic variables#
+#####################################################
 
 vifstep(cerrado.climate.df[sample(1:length(cerrado.climate.df[,4]),
                                  length(cerrado.climate.df[,4])*0.05),c(4,7:18)])
@@ -914,12 +863,12 @@ names(Bbin.all.Cerrado.LTDR) <- as.character(tt)
 BA.all.Cerrado.LTDR<-setZ(BA.all.Cerrado.LTDR,tt)
 names(BA.all.Cerrado.LTDR)<-as.character(tt)
 
-Freq.fire.LTDR.Cerrado<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/AVHRR_LTDR_Fire/Pixel/Freq.fire.LTDR.Cerrado.grd")
+Freq.fire.LTDR.Cerrado<-stack("Data/AVHRR_LTDR_Fire/Pixel/Freq.fire.LTDR.Cerrado.grd")
 Freq.fire.LTDR.Cerrado<-setZ(Freq.fire.LTDR.Cerrado,
                              seq(as.Date('2008-01-15'), as.Date('2008-12-15'), 'month'))
 names(Freq.fire.LTDR.Cerrado)<-as.character(month.abb)
 
-FireExtent.LTDR.Cerrado<-stack("/Volumes/Extreme SSD/Heitor/BD_SIG/AVHRR_LTDR_Fire/Pixel/FireExtent.Cerrado.LTDR.monthly.grd")
+FireExtent.LTDR.Cerrado<-stack("Data/AVHRR_LTDR_Fire/Pixel/FireExtent.Cerrado.LTDR.monthly.grd")
 FireExtent.LTDR.Cerrado<-setZ(FireExtent.LTDR.Cerrado,
                              seq(as.Date('2008-01-15'), as.Date('2008-12-15'), 'month'))
 names(FireExtent.LTDR.Cerrado)<-as.character(month.abb)
@@ -940,9 +889,9 @@ quartz(8,8)
 levelplot(Freq.fire.LTDR.Cerrado,par.settings=BuRdTheme) + latticeExtra::layer(sp.polygons(Cerrado))
 
 #MODIS
-setwd("/Volumes/Extreme SSD/Heitor/BD_SIG/MODIS_Fire/MCD64A1")
+setwd("Data/MODIS_Fire/MCD64A1")
 Fire.MCD64A1.month<-stack("Freq.fire.soma.MCD64A1.Cerrado.grd")
-setwd("/Volumes/Extreme SSD/Heitor/Doutorado/Analises/Cap1_SpatioTemporal_Fire_Regimes_Cerrado")
+setwd("/Users/heito/Documents/CerradoFireRegimes")
 Fire.MCD64A1.month<-setZ(Fire.MCD64A1.month,
                               seq(as.Date('2008-01-15'), as.Date('2008-12-15'), 'month'))
 names(Fire.MCD64A1.month)<-as.character(month.abb)
@@ -950,15 +899,6 @@ names(Fire.MCD64A1.month)<-as.character(month.abb)
 
 quartz(8,8)
 levelplot(Fire.MCD64A1.month/20,par.settings=BuRdTheme) + latticeExtra::layer(sp.polygons(Cerrado))
-
-# windows(10,10)
-# splom(Freq.fire.LTDR.Cerrado)
-# 
-# windows(10,10)
-# densityplot(Freq.fire.LTDR.Cerrado)#not good for visualisation
-# 
-# windows(10,10)
-# bwplot(Freq.fire.LTDR.Cerrado)
 
 # windows(10,10)
 quartz(8,8)
@@ -1258,60 +1198,11 @@ levelplot(cerrado.lu.25km.2019, main = "2019",
 
 
 
-############
-#Animations#
-############
-pal<-colorRampPalette(c("gray95","blue3","cyan","yellow","orange","firebrick3"))
-gen_anim.ProbFire.t <- function() {
-  for(t in lim_t[1]:lim_t[2]){  # for each time point
-    plot(Bbin.all.Cerrado.LTDR[[t]],
-         zlim=c(0,1),
-         main = paste0(months.study[t],"/",years.study[t]),
-         col=pal(25))            # plot data at this time point
-  }
-}
-
-gen_anim.ExtenFire.t <- function() {
-  for(t in lim_t[1]:lim_t[2]){  # for each time point
-    plot(BA.all.Cerrado.LTDR[[t]],
-         main = paste0(months.study[t],"/",years.study[t]),
-         col=pal(25))            # plot data at this time point
-  }
-}
-
-ani.options(interval = 0.2)     # 0.2s interval between frames
-setwd("/Volumes/Extreme SSD/Heitor/Doutorado/Analises/Cap1_SpatioTemporal_Fire_Regimes_Cerrado/Figs/Animation_FireProb_25km")
-saveHTML(gen_anim.ProbFire.t (),            # run the main function
-         autoplay = FALSE,      # do not play on load
-         loop = FALSE,          # do not loop
-         verbose = FALSE,       # no verbose
-         outdir = ".",          # save to current dir
-         single.opts = "'controls': ['first', 'previous',
-                                    'play', 'next', 'last',
-                                     'loop', 'speed'],
-                                     'delayMin': 0",
-         htmlfile = "ProbFire_anim_25km.html")  # save filename
-setwd("/Volumes/Extreme SSD/Heitor/Doutorado/Analises/Cap1_SpatioTemporal_Fire_Regimes_Cerrado/Figs/Animation_FireExten_25km")
-saveHTML(gen_anim.ExtenFire.t (),            # run the main function
-         autoplay = FALSE,      # do not play on load
-         loop = FALSE,          # do not loop
-         verbose = FALSE,       # no verbose
-         outdir = ".",          # save to current dir
-         single.opts = "'controls': ['first', 'previous',
-                                    'play', 'next', 'last',
-                                     'loop', 'speed'],
-                                     'delayMin': 0",
-         htmlfile = "ExtenFire_anim_25km.html")  # save filename
-
-setwd("/Volumes/Extreme SSD/Heitor/Doutorado/Analises/Cap1_SpatioTemporal_Fire_Regimes_Cerrado")
-
-
-
 ###########
 #Modelling#
 ###########
 # 
-# cerrado.climate.df<-readRDS("cerrado.climate.df.rds")
+# cerrado.climate.df<-readRDS("Data/Predictors/cerrado.climate.df.rds")
 # fixed.covs.df<-readRDS("fixed.covs.df.rds")
 # cerrado.fire.df<-readRDS("cerrado.fire.df.rds")
 # 
@@ -1324,7 +1215,7 @@ setwd("/Volumes/Extreme SSD/Heitor/Doutorado/Analises/Cap1_SpatioTemporal_Fire_R
 # 
 # saveRDS(cerrado.fire.covs.df,"cerrado.fire.covs.df.rds")
 library(mgcv)
-cerrado.fire.covs.df<-readRDS("cerrado.fire.covs.df.rds")
+cerrado.fire.covs.df<-readRDS("Data/Predictors/cerrado.fire.covs.df.rds")
 head(cerrado.fire.covs.df)
 tail(cerrado.fire.covs.df)
 
@@ -2561,168 +2452,16 @@ pl <- plotSlice(x = sm(bam.full.FireExtent.viz, 1),
 pl + l_fitRaster() + l_fitContour()  + l_rug()
 
 
-saveRDS(bam.full.FireProb3,"bam.full.FireProb3.rds")
-saveRDS(bam.full.FireExtent5,"bam.full.FireExtent5.rds")
-
-#Some diagnostics#
-##################
-
-library(gstat)
-library(spacetime)
-
-#Space-time object
-xy.Cerrado<-cerrado.fire.covs.df[,2:3]
-xy.Cerrado<-unique(cerrado.fire.covs.df[,2:3])
-
-coordinates(xy.Cerrado) <- ~ x + y
-proj4string(xy.Cerrado) <- crs(Bbin.all.Cerrado.LTDR)
-plot(xy.Cerrado)
-xy.Cerrado@coords[,3] <- st.fire.df$ID
-
-st.fire.df<-cerrado.fire.covs.df[,c(1:4,8,9)]
-st.fire.df$Date.x<-as.POSIXct(st.fire.df$Date.x)
-st.fire.df$ID <- as.factor(st.fire.df$ID)
-st.fire.df$ID <- factor(st.fire.df$ID, levels = unique(st.fire.df$ID))
+# saveRDS(bam.full.FireProb3,"bam.full.FireProb3.rds")
+# saveRDS(bam.full.FireExtent5,"bam.full.FireExtent5.rds")
 
 
-FireProb.st<-stConstruct(st.fire.df,
-                         space = "ID",
-                         time = "Date.x",
-                         xy.Cerrado)
-
-x = stConstruct(st.fire.df, c("x", "y"), "Date.x", interval = F)
-stplot(x,mode="xt")
-
-table(st.fire.df$ID)
-stplot(FireProb.st,mode="xt")
-
-length(unique(FireProb.st@data$ID))
-str(FireProb.st@data$ID)
-
-table(FireProb.st@data$Date.x)
-table(FireProb.st@data$Freq_fire)
-table(FireProb.st@time$timeIndex)
-
-
-
-
-FireProb.st <- STFDF(sp = xy.Cerrado, time = unique(st.fire.df$Date.x),
-                     data = st.fire.df[,c(1,5,6)])
-
-locs <- read.table(system.file("extdata", "Stationinfo.dat", package = "STRbook"),
-                   col.names = c("id", "lat", "lon"))
-Times <- read.table(system.file("extdata", "Times_1990.dat",
-                                package = "STRbook"),
-                    col.names = c("julian", "year", "month", "day"))
-Tmax <- read.table(system.file("extdata", "Tmax_1990.dat", package = "STRbook"))
-spat_part <- SpatialPoints(coords = locs[, c("lon", "lat")])
-temp_part <- with(Times,
-                  paste(year, month, day, sep = "-")) 
-temp_part <- as.Date(temp_part)
-names(Tmax) <- locs$id
-
-Tmax <- cbind(Times, Tmax) 
-head(names(Tmax), 10)
-Tmax_long3 <- gather(Tmax, id, z, -julian, -year, -month, -day)
-
-Tmax_long3$id <- as.integer(Tmax_long3$id) 
-Tmax_long3 <- arrange(Tmax_long3,julian,id)
-
-STObj3 <- STFDF(sp = spat_part, time = temp_part,
-                data = Tmax_long3)
-
-# example 0: construction of STFDF from long table:
-if (require(maps)) {
-  states.m = map('state', plot=FALSE, fill=TRUE)
-  IDs <- sapply(strsplit(states.m$names, ":"), function(x) x[1])
-  
-  library(maptools)
-  states = map2SpatialPolygons(states.m, IDs=IDs)
-  
-  if (require(plm)) {
-    data(Produc)
-    
-    yrs = 1970:1986
-    t = as.POSIXct(paste(yrs, "-01-01", sep=""), tz = "GMT")
-    # deselect District of Columbia, polygon 8, which is not present in Produc:
-    Produc.st = STFDF(states[-8], t, Produc[(order(Produc[,2], Produc[,1])),])
-    
-    # example 1: st from long table, with states as Spatial object:
-    # use Date format for time:
-    Produc$time = as.Date(paste(yrs, "01", "01", sep = "-"))
-    # take centroids of states:
-    xy = coordinates(states[-8])
-    Produc$x = xy[,1]
-    Produc$y = xy[,2]
-    #using stConstruct, use polygon centroids for location:
-    x = stConstruct(Produc, c("x", "y"), "time", interval = TRUE)
-    class(x)
-    stplot(x[,,"unemp"])
-    
-    # alternatively, pass states as SpatialObj:
-    Produc$state = gsub("TENNESSE", "TENNESSEE", Produc$state)
-    Produc$State = gsub("_", " ", tolower(Produc$state))
-    x = stConstruct(Produc, "State", "time", states[-8])
-    class(x)
-    all.equal(x, Produc.st, check.attributes = FALSE)
-  }}
-
-# stConstruct multivariable, time-wide
-if (require(maptools)) {
-  fname = system.file("shapes/sids.shp", package="maptools")[1]
-  nc = rgdal::readOGR(fname) 
-  timesList = list(
-    BIR=c("BIR74", "BIR79"),  # sets of variables that belong together
-    NWBIR=c("NWBIR74", "NWBIR79"), # only separated by space
-    SID=c("SID74", "SID79")
-  )
-  t = as.Date(c("1974-01-01","1979-01-01"))
-  nc.st = stConstruct(as(nc, "data.frame"), geometry(nc), timesList,
-                      TimeObj = t, interval = TRUE)
-  
-}
-# stConstruct multivariable, space-wide
-if (require(gstat)) {
-  data(wind)
-  wind.loc$y = as.numeric(char2dms(as.character(wind.loc[["Latitude"]])))
-  wind.loc$x = as.numeric(char2dms(as.character(wind.loc[["Longitude"]])))
-  coordinates(wind.loc) = ~x+y
-  proj4string(wind.loc) = "+proj=longlat +datum=WGS84"
-  
-  # match station order to names in wide table:
-  stations = 4:15
-  wind.loc = wind.loc[match(names(wind[stations]), wind.loc$Code),]
-  row.names(wind.loc) = wind.loc$Station
-  # convert to utm zone 29, to be able to do interpolation in
-  # proper Euclidian (projected) space:
-  
-  # create time variable
-  wind$time = ISOdate(wind$year+1900, wind$month, wind$day, 0)
-  
-  w = STFDF(wind.loc, wind$time, 
-            data.frame(values = as.vector(t(wind[stations]))))
-  space = list(values = names(wind)[stations])
-  wind.st = stConstruct(wind[stations], space, wind$time, SpatialObj = wind.loc, interval = TRUE)
-  all.equal(w, wind.st)
-  class(wind.st)
-}
-
-vv <- variogram(object=Freq_fire ~ 1, # fixed effect component
-           data = FireProb.st,
-           width = 5,
-           cutoff = 10,
-          tunit = "weeks",
-           tlags = seq(from=4, to=48, by=4),
-          assumeRegular = T,
-          progress=T) # 0 days to 6 days)
-
-plot(vv)
 #############################################
 ## Plot predictions and overlay observations#
 #############################################
 library(spTimer)
-bam.full.FireProb3<- readRDS("bam.full.FireProb3.rds")
-bam.full.FireExtent5<- readRDS("bam.full.FireExtent5.rds")
+bam.full.FireProb3<- readRDS("Output/bam.full.FireProb3.rds")
+bam.full.FireExtent5<- readRDS("Output/bam.full.FireExtent5.rds")
 
 Fire.month.mean <- group_by(new.cerrado.fire.covs.df, x, y, Month.x) %>%
   summarise_all(mean)
@@ -2771,15 +2510,15 @@ pred.bam.mean.FireExtent.df<-data.frame(ExtentFire = pred.bam.mean.FireExtent$fi
                                         y = FireExtent.month.mean$y,
                                         t = FireExtent.month.mean$Month.x)
 
-saveRDS(pred.bam.mean.FireProb.df,"pred.bam.mean.FireProb.df.rds")
-saveRDS(pred.bam.mean.FireExtent.df,"pred.bam.mean.FireExtent.df.rds")
+# saveRDS(pred.bam.mean.FireProb.df,"pred.bam.mean.FireProb.df.rds")
+# saveRDS(pred.bam.mean.FireExtent.df,"pred.bam.mean.FireExtent.df.rds")
 
 library(ggplot2)
 library(STRbook)
 library(tidyr)
 library(dplyr)
-pred.bam.mean.FireProb.df<-readRDS("pred.bam.mean.FireProb.df.rds")
-pred.bam.mean.FireExtent.df<-readRDS("pred.bam.mean.FireExtent.df.rds")
+pred.bam.mean.FireProb.df<-readRDS("Output/pred.bam.mean.FireProb.df.rds")
+pred.bam.mean.FireExtent.df<-readRDS("Output/pred.bam.mean.FireExtent.df.rds")
 
 #Fire occurrence
 g1.pred.bam.FireProb <- ggplot() +
@@ -2845,428 +2584,6 @@ g2.pred.bam.FireExtent <- ggplot() +
 quartz(8,8)
 g2.pred.bam.FireExtent
 
-########
-#sdmTMB#
-########
-library(sdmTMB)
-coords <- unique(new.cerrado.fire.covs.df[c("ID", "x", "y")])
-sdmTMBmesh <- make_mesh(new.cerrado.fire.covs.df,c("x","y"),cutoff = .5)
-plot(sdmTMBmesh)
-
-new.cerrado.fire.covs.df$t <- as.factor(new.cerrado.fire.covs.df$t)
-
-
-fit.sdmtmb <- sdmTMB(
-  Freq_fire~
-    s(RH,bs="cr")+
-    s(total.evap,bs="cr")+
-    s(pot.evap,bs="cr")+
-    s(precip,bs="cr")+
-    s(temp_2m,bs="cr")+
-    s(sol,bs="cr")+
-    s(wind,bs="cr")+
-    s(water_lv1,bs="cr")+
-    s(decliv.Cerrado,bs="cr"),
-  data = new.cerrado.fire.covs.df,
-  mesh = sdmTMBmesh,
-  time = "t",
-  family = binomial(link = "logit"),
-  spatial = "off",
-  spatiotemporal = "ar1"
-)
-
-summary(fit.sdmtmb)
-tidy(fit.sdmtmb, conf.int = TRUE)
-tidy(fit.sdmtmb, effects = "ran_pars", conf.int = TRUE)
-
-p <- predict(fit.sdmtmb, newdata = Toreadicus.captures.env)
-
-plot(est~Toreadicus_perf,data=p)
-plot(est~precip,data=p)
-plot(freq~Toreadicus_perf,data=p)
-
-plot_smooth(fit.sdmtmb)
-
-#########
-#spTimer#
-#########
-library(spTimer)
-
-table(new.cerrado.fire.covs.df$ID)
-
-# s.fire<-sample(new.cerrado.fire.covs.df$ID, size= length(unique(new.cerrado.fire.covs.df$ID)) * 0.30 )
-# DataFit<-spT.subset(data = new.cerrado.fire.covs.df, 
-#                     var.name = "ID", s = s.fire,reverse = TRUE)
-# 
-# DataValPred<-spT.subset(data = new.cerrado.fire.covs.df, 
-#                     var.name = "ID", s = s.fire)
-# saveRDS(DataFit,"DataFit.rds")
-# saveRDS(DataValPred,"DataValPred.rds")
-DataFit<-readRDS("DataFit.rds")
-DataValPred<-readRDS("DataValPred.rds")
-
-time.fire<-spT.time(t.series=12,segment=33)
-
-spatial.decay<-spT.decay(distribution=Gamm(2,1), tuning=0.08)
-
-knots<-spT.grid.coords(Longitude = c(max(cerrado.fire.covs.df$x),
-                                   min(cerrado.fire.covs.df$x)),Latitude=c(max(cerrado.fire.covs.df$y),
-                                                               min(cerrado.fire.covs.df$y)), by=c(15,15))
-
-coords.data <- unique(new.cerrado.fire.covs.df[c("ID", "x", "y")])
-
-windows(10,10)
-plot(knots,pch="X",col="red",xlab="Longitude",ylab="Latitude")
-plot(CerradoMask,add=T)
-points(coords.data$x,coords.data$y,col="blue")
-
-##################
-#Fire probability#
-##################
-
-# FireProb.GPP2<-spT.Gibbs(Freq_fire~precip+
-#                          temp_2m+
-#                          sol+
-#                          wind+
-#                          water_lv1+
-#                          DEM.Cerrado+
-#                          decliv.Cerrado,
-#                        data=DataFit,model="GPP",time.data = time.fire,
-#                         spatial.decay = spatial.decay,
-#                        coords = ~ x + y,knots.coords = knots)
-# saveRDS(FireProb.GPP2,"FireProb.GPP.rds")
-
-FireProb.GPP2<-readRDS("FireProb.GPP2.rds")
-
-print(FireProb.GPP2)
-summary(FireProb.GPP2)
-FireProb.GPP2$PMCC
-windows(10,10)
-plot(FireProb.GPP2)
-
-
-FireProb.GPP3<-spT.Gibbs(Freq_fire~precip+
-                         temp_2m+
-                         sol+
-                         wind+
-                         water_lv1+
-                         DEM.Cerrado+
-                         decliv.Cerrado+
-                           as.factor(land_use),
-                       data=DataFit,model="GPP",time.data = time.fire,
-                       newdata = DataValPred, newcoords = ~ x+y,
-                       spatial.decay = spatial.decay,
-                       coords = ~ x + y,knots.coords = knots)
-gc()
-saveRDS(FireProb.GPP3,"FireProb.GPP3.rds")
-
-FireProb.GPP3<-readRDS("FireProb.GPP3.rds")
-
-print(FireProb.GPP3)
-summary(FireProb.GPP3)
-FireProb.GPP3$PMCC
-
-# validation criteria
-spT.validation(DataValPred$Freq_fire,c(FireProb.GPP3$prediction[,1]))
-
-#Diagnostics
-
-library(coda)
-FireProb.GPP3.mcmc<-as.mcmc(read.table("OutGPP_Values_Parameter.txt"))
-autocorr.diag(FireProb.GPP3.mcmc)
-
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,1], type = "l", main = "Intercept", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,2], type = "l", main = "Precipitation", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,3], type = "l", main = "Air temperature", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,4], type = "l", main = "Solar radiation", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,5], type = "l", main = "Wind speed", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,6], type = "l", main = "Water in level 1", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,7], type = "l", main = "DEM", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,8], type = "l", main = "Slope", xlab = "Iterations", ylab = "")
-
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,9], type = "l", main = "Forest", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,10], type = "l", main = "Savanna", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,11], type = "l", main = "Forest plantation", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,12], type = "l", main = "Grassland", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,13], type = "l", main = "Pasture", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,14], type = "l", main = "Sugar cane", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,15], type = "l", main = "Urban", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,16], type = "l", main = "Water", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,17], type = "l", main = "Soy bean", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireProb.GPP3.mcmc[,18], type = "l", main = "Other crops", xlab = "Iterations", ylab = "")
-
-#############
-#Fire Extent#
-#############
-
-# DataFit$Exten_Fire<-log(DataFit$Exten_Fire+0.01)
-#DataValPred$Exten_Fire<-log(DataValPred$Exten_Fire+0.01)
-#                        
-
-# FireExten.GPP2<-spT.Gibbs(Exten_Fire~precip+
-#                             temp_2m+
-#                             sol+
-#                             wind+
-#                             water_lv1+
-#                             DEM.Cerrado+
-#                             decliv.Cerrado,
-#                           data=DataFit,model="GPP",time.data = time.fire,
-#                           spatial.decay = spatial.decay,
-#                           coords = ~ x + y,knots.coords = knots)
-# gc()
-# saveRDS(FireExten.GPP2,"FireExten.GPP2.rds")
-# FireExten.GPP2<-readRDS("FireExten.GPP2.rds")
-# 
-# print(FireExten.GPP2)
-# summary(FireExten.GPP2)
-# FireExten.GPP2$PMCC
-# windows(10,10)
-# plot(FireExten.GPP2,residuals=T)
-
-
-FireExten.GPP3<-spT.Gibbs(Exten_Fire~precip+
-                          temp_2m+
-                          sol+
-                          wind+
-                          water_lv1+
-                          DEM.Cerrado+
-                          decliv.Cerrado+
-                          leaf_high+
-                          leaf.low+
-                          biomass.Cerrado+
-                          canopy.height.Cerrado+
-                          CerradoRoads.dist+
-                          as.factor(land_use),
-                        data=DataFit,model="GPP",time.data = time.fire,
-                        newdata = DataValPred, newcoords = ~ x+y,
-                        spatial.decay = spatial.decay,
-                        coords = ~ x + y,knots.coords = knots)
-gc()
-saveRDS(FireExten.GPP3,"FireExten.GPP3.rds")
-FireExten.GPP3<-readRDS("FireExten.GPP3.rds")
-
-print(FireExten.GPP3)
-summary(FireExten.GPP3)
-FireExten.GPP3$PMCC
-
-# validation criteria
-spT.validation(DataValPred$Exten_Fire,c(FireExten.GPP3$prediction[,1]))
-
-#Diagnostics
-
-FireExten.GPP3.mcmc<-as.mcmc(read.table("OutGPP_Values_Parameter.txt"))
-autocorr.diag(FireExten.GPP3.mcmc)
-
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,1], type = "l", main = "Intercept", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,2], type = "l", main = "Precipitation", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,3], type = "l", main = "Air temperature", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,4], type = "l", main = "Solar radiation", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,5], type = "l", main = "Wind speed", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,6], type = "l", main = "Water in level 1", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,7], type = "l", main = "Elevation", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,8], type = "l", main = "Slope", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,9], type = "l", main = "Leaf area index (high)", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,10], type = "l", main = "Leaf area index (low)", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,11], type = "l", main = "Aboveground biomass", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,12], type = "l", main = "Canopy height", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,13], type = "l", main = "Distance to roads", xlab = "Iterations", ylab = "")
-
-
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,14], type = "l", main = "Forest", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,15], type = "l", main = "Savanna", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,16], type = "l", main = "Forest plantation", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,17], type = "l", main = "Grassland", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,18], type = "l", main = "Pasture", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,19], type = "l", main = "Sugar cane", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,20], type = "l", main = "Urban", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,21], type = "l", main = "Water", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,22], type = "l", main = "Soy bean", xlab = "Iterations", ylab = "")
-windows(10,10)
-plot(FireExten.GPP3.mcmc[,23], type = "l", main = "Other crops", xlab = "Iterations", ylab = "")
-
-rm(FireExten.GPP3)
-rm(FireProb.GPP3)
-gc()
-
-######################
-#Comparison with GAMs#
-######################
-library(mgcv)
-
-bam.FireProb.compair <- bam(Freq_fire~te(y,x,t,bs="cr",d=c(2,1))+
-                            s(precip,bs="cr")+
-                            s(temp_2m,bs="cr")+
-                            s(sol,bs="cr")+
-                            s(wind,bs="cr")+
-                            s(water_lv1,bs="cr")+
-                            s(DEM.Cerrado,bs="cr")+
-                            s(decliv.Cerrado,bs="cr")+
-                            as.factor(land_use),
-                          data = DataFit,family="binomial",discrete=T)
-
-
-bam.FireExtent.compair <- bam(Exten_Fire~te(y,x,t,bs="cr",d=c(2,1))+
-                              s(precip,bs="cr")+
-                              s(temp_2m,bs="cr")+
-                              s(sol,bs="cr")+
-                              s(wind,bs="cr")+
-                              s(water_lv1,bs="cr")+
-                              s(DEM.Cerrado,bs="cr")+
-                              s(decliv.Cerrado,bs="cr")+
-                              s(canopy.height.Cerrado,bs="cr")+
-                              s(leaf_high,bs="cr")+
-                              s(leaf.low,bs="cr")+
-                              s(biomass.Cerrado,bs="cr")+
-                              s(CerradoRoads.dist,bs="cr")+
-                              as.factor(land_use),
-                            data = DataFit,discrete=T)
-
-
-
-pred.bam.FireProb.compair<-predict(bam.FireProb.compair,
-                                   DataValPred,
-                                 type="response",se.fit = T)
-
-pred.bam.FireExtent.compair<-predict(bam.FireExtent.compair,
-                                   DataValPred,
-                                   type="response",se.fit=T)
-
-summary(bam.FireProb.compair)
-summary(bam.FireExtent.compair)
-
-spT.validation(DataValPred$Freq_fire, pred.bam.FireProb.compair$fit)
-spT.validation(DataValPred$Exten_Fire,pred.bam.FireExtent.compair$fit)
-
-#############################################
-## Plot predictions and overlay observations#
-#############################################
-library(dplyr)
-library(tidyr)
-FireProb_Fitted<-read.table("ProbFire_OutGPP_Stats_FittedValue.txt")
-FireProb_Pred<-read.table("ProbFire_OutGPP_Stats_PredValue.txt")
-FireExtent_Fitted<-read.table("FireExtent_OutGPP_Stats_FittedValue.txt")
-FireExtent_Pred<-read.table("FireExtent_OutGPP_Stats_PredValue.txt")
-
-DataFitPred<-rbind(DataFit,DataValPred)
-
-pred.spT.mean.Fire.df<-data.frame(ProbFire = rbind(FireProb_Fitted,FireProb_Pred)[,1],
-                                      ProbFire.se = rbind(FireProb_Fitted,FireProb_Pred)[,3],
-                                      ExtentFire = rbind(FireExtent_Fitted,FireExtent_Pred)[,1],
-                                      ExtentFire.se = rbind(FireExtent_Fitted,FireExtent_Pred)[,3],
-                                      x = DataFitPred$x,
-                                      y = DataFitPred$y,
-                                      t = DataFitPred$Month.x)
-
-
-Fire.spT.month.mean <- group_by(pred.spT.mean.Fire.df, x, y, t) %>%
-  summarise_all(mean)
-
-Fire.spT.month.mean
-
-saveRDS(Fire.spT.month.mean,"Fire.spT.month.mean.rds")
-
-library(ggplot2)
-library(STRbook)
-library(tidyr)
-library(dplyr)
-
-#Fire occurrence
-g1.pred.spT.FireProb <- ggplot() +
-  geom_raster(data = Fire.spT.month.mean,
-              aes(x, y, fill = pmin(pmax(ProbFire, 0), 1))) +
-  facet_wrap(~t, nrow = 3, ncol = 4) +
-  fill_scale(limits = c(0, 1),
-             name = expression(Y[t])) +
-  col_scale(name = "Fire occurrence", limits=c(0, 1)) +
-  theme_bw()
-
-windows(10,10)
-g1.pred.spT.FireProb
-
-summary(Fire.spT.month.mean$ProbFire.se)
-## Plot prediction standard errors
-g2.pred.spT.FireProb <- ggplot() +
-  geom_raster(data = Fire.spT.month.mean,
-              aes(x, y, fill = pmin(ProbFire.se, 0.40))) +
-  facet_wrap(~t, nrow = 3, ncol = 4) +
-  fill_scale(palette = "BrBG",
-             limits = c(0.37, 0.40),
-             name = expression(s.e.)) +
-  theme_bw()
-
-windows(10,10)
-g2.pred.spT.FireProb
-
-summary(Fire.spT.month.mean$ExtentFire)
-#Fire Extent
-g1.pred.spT.FireExtent <- ggplot() +
-  geom_raster(data = Fire.spT.month.mean,
-              aes(x, y, fill = pmin(pmax(ExtentFire, -12), 16))) +
-  facet_wrap(~t, nrow = 3, ncol = 4) +
-  fill_scale(limits = c(-12, 16),
-             name = expression(log(Y[t]))) +
-  col_scale(name = "Fire extent (m?)") +
-  theme_bw()
-
-windows(10,10)
-g1.pred.spT.FireExtent
-
-windows(10,10)
-boxplot(Fire.spT.month.mean$ExtentFire.se)
-summary(Fire.spT.month.mean$ExtentFire.se)
-## Plot prediction standard errors
-g2.pred.spT.FireExtent <- ggplot() +
-  geom_raster(data = Fire.spT.month.mean,
-              aes(x, y, fill = pmin(ExtentFire.se, 7.6))) +
-  facet_wrap(~t, nrow = 3, ncol = 4) +
-  fill_scale(palette = "BrBG",
-             limits = c(7.4,7.6),
-             name = expression(s.e.)) +
-  theme_bw()
-
-windows(10,10)
-g2.pred.spT.FireExtent
-
 
 ##################
 #Cluster analysis#
@@ -3276,7 +2593,7 @@ library(tidyverse)
 library(corrplot)
 library(usdm)
 library(ggfortify)
-setwd("/Volumes/Extreme SSD/Heitor/BD_SIG/AVHRR_LTDR_Fire/Pixel")
+setwd("Data/AVHRR_LTDR_Fire/Pixel")
 
 Freq.fire.LTDR.Cerrado <- stack("Freq.fire.LTDR.Cerrado.grd")
 FireExtent.LTDR.Cerrado <- stack("FireExtent.Cerrado.LTDR.monthly.grd")
@@ -3284,7 +2601,7 @@ FireExtent.LTDR.Cerrado <- stack("FireExtent.Cerrado.LTDR.monthly.grd")
 Freq.sd.fire.LTDR.Cerrado <- stack("Freq.sd.fire.LTDR.Cerrado.grd")
 FireExtent.sd.LTDR.Cerrado <- stack("FireExtent.sd.Cerrado.LTDR.monthly.grd")
 
-setwd("/Volumes/Extreme SSD/Heitor/Doutorado/Analises/Cap1_SpatioTemporal_Fire_Regimes_Cerrado")
+setwd("/Users/heito/Documents/CerradoFireRegimes")
 
 Freq.fire.LTDR.Cerrado.df<-as.data.frame(Freq.fire.LTDR.Cerrado,na.rm=T,xy=T)
 FireExtent.LTDR.Cerrado.df<-as.data.frame(FireExtent.LTDR.Cerrado,na.rm=T,xy=T)
@@ -3443,9 +2760,9 @@ names(FireProbExten.LTDR.Cerrado)<-c("FireProb.1","FireProb.2","FireProb.3",
                                      "sdExten.10","sdExten.11","sdExten.12")
 FireProbExten.LTDR.Cerrado
 
-####################
-#Using monthly data#
-####################
+
+#Using monthly data and including coefficient of variation of fire extent#
+##########################################################################
 ValsFireMonth_mat <- values(FireProbExten.LTDR.Cerrado)
 rownames(ValsFireMonth_mat) <- 1:dim(ValsFireMonth_mat)[1]
 
@@ -3588,9 +2905,8 @@ names(FireProbExten.LTDR.Cerrado)<-c("FireProb.1","FireProb.2","FireProb.3",
                                      "FireExten.10","FireExten.11","FireExten.12")
 FireProbExten.LTDR.Cerrado
 
-####################
-#Using monthly data#
-####################
+#Using monthly data just with mean fire occurrence (frequency) and extent#
+##########################################################################
 ValsFireMonth_mat <- values(FireProbExten.LTDR.Cerrado)
 rownames(ValsFireMonth_mat) <- 1:dim(ValsFireMonth_mat)[1]
 
@@ -3722,12 +3038,11 @@ writeRaster(Pred_ras,"FireRegimesCerrado_months.grd",overwrite=T)
 writeRaster(Pred_ras_interp,"FireRegimesCerrado_months_interp.grd",overwrite=T)
 
 
-##################
 #Using MODIS data#
 ##################
-setwd("/Volumes/Extreme SSD/Heitor/BD_SIG/MODIS_Fire/MCD64A1")
+setwd("Data/MODIS_Fire/MCD64A1")
 Fire.MCD64A1.month<-stack("Freq.fire.soma.MCD64A1.Cerrado.grd")
-setwd("/Volumes/Extreme SSD/Heitor/Doutorado/Analises/Cap1_SpatioTemporal_Fire_Regimes_Cerrado")
+setwd("/Users/heito/Documents/CerradoFireRegimes")
 
 
 ValsFireMonth_mat3 <- values(Fire.MCD64A1.month)
@@ -3744,6 +3059,7 @@ dim(ValsFireMonth_mat3)
 ValsFireMonth_mat3[,c(1:12)] <- scale1d(ValsFireMonth_mat3[,c(1:12)],
                                         ValsFireMonth_mat3[,c(1:12)])
 
+#Next lines take a long time to run
 set.seed(123)
 dataBIC3 <- mclustBIC(ValsFireMonth_mat3,G=1:5)# identify BICs for different models
 print(summary(dataBIC3)) # show summary of top-ranking models
@@ -3878,291 +3194,3 @@ autoplot(pca.fire,
 
 writeRaster(Pred_ras5,"FireRegimesCerrado_MODIS_2clusters.grd",overwrite=T)
 
-
-######
-#INLA#
-######
-#If you need to install, run the following lines:
-#install.packages("INLA",repos=c(getOption("repos"),
-#INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)
-library(INLA)
-library(tidyverse)
-library(sp)
-
-#Mesh construction#
-###################
-# Cerrado.xy<-SpatialPoints(coordinates(Bbin.all.Cerrado.LTDR[[1]]))
-# Cerrado.xy<-crop(Cerrado.xy,CerradoMask)
-new.cerrado.fire.covs.df$t<-new.cerrado.fire.covs.df$t-36
-coords <- unique(new.cerrado.fire.covs.df[c("ID", "x", "y")])
-bdry <- inla.sp2segment(CerradoMask)
-bdry$loc <- inla.mesh.map(bdry$loc)
-
-mesh1 <- inla.mesh.2d(loc = coords[,2:3], boundary = bdry, max.edge=c(0.5, 1))
-mesh2 <- inla.mesh.2d(loc = coords[,2:3], boundary = bdry, max.edge=c(1, 1.5),
-                      offset = c(0.5,1))
-mesh3 <- inla.mesh.2d(loc = coords[,2:3], boundary = bdry, max.edge=c(1,1.5), 
-                      offset = c(1, 1.5),
-                      cutoff = 0.5)
-
-windows(20,10)
-par(mfrow=c(1,3))
-plot(mesh1)
-plot(mesh2)
-plot(mesh3)
-
-#The SPDE and A matrix#
-#######################
-spde <- inla.spde2.pcmatern(mesh = mesh3,
-                            alpha = 2,
-                            prior.range = c(1, 0.01),
-                            prior.sigma = c(4, 0.01))
-
-n_months <- length(unique(new.cerrado.fire.covs.df$t))
-n_spatial <- mesh3$n
-s_z_idx <- inla.spde.make.index(name = "x",
-                                n.spde = n_spatial,
-                                n.group = n_months)
-
-s_zc_idx <- inla.spde.make.index(name = "x.c",
-                                n.spde = n_spatial,
-                                n.group = n_months)
-
-s_y_idx <- inla.spde.make.index(name = "u",
-                                n.spde = n_spatial,
-                                n.group = n_months)
-
-coords.allmonth <- new.cerrado.fire.covs.df[c("x", "y")] %>%
-  as.matrix()
-
-PHI <- inla.spde.make.A(mesh = mesh3,
-                        loc = coords.allmonth,
-                        group = new.cerrado.fire.covs.df$t,
-                        n.group = n_months)
-dim(PHI)
-nrow(new.cerrado.fire.covs.df)
-length(s_z_idx$x)
-
-## First stack: Estimation
-n_data <- nrow(new.cerrado.fire.covs.df)
-new.cerrado.fire.covs.df$Exten_Fire[new.cerrado.fire.covs.df$Exten_Fire==0]<-NA
-
-stack_est_FireProb <- inla.stack(
-  data = list(Y = cbind(new.cerrado.fire.covs.df$Freq_fire, NA), link = 1),
-  A = list(PHI, 1),
-  effects = list(c(list(s_z_idx),
-                z.intercept = rep(1, n_data)),
-                 list(precip = new.cerrado.fire.covs.df$precip,
-                 temp_2m = new.cerrado.fire.covs.df$temp_2m,
-                 sol = new.cerrado.fire.covs.df$sol,
-                 wind = new.cerrado.fire.covs.df$wind,
-                 water_lv1 = new.cerrado.fire.covs.df$water_lv1,
-                 leaf_high = new.cerrado.fire.covs.df$leaf_high,
-                 DEM = new.cerrado.fire.covs.df$DEM.Cerrado,
-                 decliv = new.cerrado.fire.covs.df$decliv.Cerrado,
-                 land_use = as.factor(new.cerrado.fire.covs.df$land_use))),
-  tag = "obs.fireprob")
-gc()
-stack_est_FireExten <- inla.stack(
-  data = list(Y = cbind(NA,new.cerrado.fire.covs.df$Exten_Fire),link=2),
-  A = list(PHI, 1),
-  effects = list(c(list(s_z_idx),
-                   y.intercept = rep(1, n_data)),
-                 precip = new.cerrado.fire.covs.df$precip,
-                 temp_2m = new.cerrado.fire.covs.df$temp_2m,
-                 sol = new.cerrado.fire.covs.df$sol,
-                 wind = new.cerrado.fire.covs.df$wind,
-                 water_lv1 = new.cerrado.fire.covs.df$water_lv1,
-                 leaf_high = new.cerrado.fire.covs.df$leaf_high,
-                 DEM = new.cerrado.fire.covs.df$DEM.Cerrado,
-                 decliv = new.cerrado.fire.covs.df$decliv.Cerrado,
-                 land_use = as.factor(new.cerrado.fire.covs.df$land_use)),
-  tag = "obs.fireexten")
-gc()
-stack_pred_FireProb <- inla.stack(
-  data = list(Y = matrix(NA, ncol(PHI), 2), link = 1), 
-  effects = list(c(list(s_z_idx),
-                   z.intercept = rep(1, n_data)),
-                 precip = new.cerrado.fire.covs.df$precip,
-                 temp_2m = new.cerrado.fire.covs.df$temp_2m,
-                 sol = new.cerrado.fire.covs.df$sol,
-                 wind = new.cerrado.fire.covs.df$wind,
-                 water_lv1 = new.cerrado.fire.covs.df$water_lv1,
-                 leaf_high = new.cerrado.fire.covs.df$leaf_high,
-                 DEM = new.cerrado.fire.covs.df$DEM.Cerrado,
-                 decliv = new.cerrado.fire.covs.df$decliv.Cerrado,
-                 land_use = as.factor(new.cerrado.fire.covs.df$land_use)), 
-  A = list(1, 1),
-  tag = 'fireprob.pred') 
-gc()
-stack_pred_FireExten <- inla.stack(
-  data = list(Y = matrix(NA, ncol(PHI), 2), link = 2), 
-  A = list(1, 1),
-  effects = list(c(list(s_z_idx),
-                   y.intercept = rep(1, n_data)),
-                 precip = new.cerrado.fire.covs.df$precip,
-                 temp_2m = new.cerrado.fire.covs.df$temp_2m,
-                 sol = new.cerrado.fire.covs.df$sol,
-                 wind = new.cerrado.fire.covs.df$wind,
-                 water_lv1 = new.cerrado.fire.covs.df$water_lv1,
-                 leaf_high = new.cerrado.fire.covs.df$leaf_high,
-                 DEM = new.cerrado.fire.covs.df$DEM.Cerrado,
-                 decliv = new.cerrado.fire.covs.df$decliv.Cerrado,
-                 land_use = as.factor(new.cerrado.fire.covs.df$land_use)),
-  tag = 'fireexten.pred')
-gc()
-
-stk.all <- inla.stack(stack_est_FireProb, stack_est_FireExten, 
-                      stack_pred_FireProb, stack_pred_FireExten)
-
-#Priors#
-########
-prange <- c(5, 0.05)
-rhoprior <- list(rho = list(prior = 'pc.cor1',
-                            param = c(0.5, 0.7)))
-
-bprior <- list(prior = 'gaussian', param = c(0,1))
-
-pcgprior <- list(prior = 'pc.gamma', param = 1)
-
-cff <- list(list(), list(hyper = list(prec = pcgprior)))
-
-cinla <- list(strategy = 'adaptive', int.strategy = 'eb') 
-
-cres <- list(return.marginals.predictor = FALSE, 
-             return.marginals.random = FALSE)
-
-cg <- list(model = 'ar1', hyper = rhoprior)
-
-#joint model with the shared space-time component
-formula.joint <- Y ~ -1 + z.intercept + y.intercept + 
-  precip+
-  temp_2m+
-  sol+
-  wind+
-  water_lv1+
-  leaf_high+
-  DEM.Cerrado+
-  decliv.Cerrado+
-  land_use+
-  f(x, model = spde, group = x.group, control.group = cg) + 
-  f(xc, copy = "x", fixed = FALSE, group = xc.group,
-    hyper = list(beta = bprior)) + 
-  f(u, model = spde, group = u.group, control.group = cg)  
-
-# Initial values of parameters
-ini.jo <- c(-0.047, 5.34, 0.492, 1.607, 4.6, -0.534, 1.6, 0.198)
-
-
-res.jo <- inla(formula.joint, family = c("binomial", "gamma"), 
-               data = inla.stack.data(stk.all), control.family = cff, 
-               control.predictor = list(A = inla.stack.A(stk.all),
-                                        link = link), 
-               control.compute = list(dic = TRUE, waic = TRUE, cpo = TRUE,
-                                      config = TRUE),
-               control.results = cres, control.inla = cinla, 
-               control.mode = list(theta = ini.jo, restart = TRUE))
-
-#Model without the shared space-time component
-formula.zy <- Y ~ -1 + z.intercept + y.intercept + 
-  precip+
-  temp_2m+
-  sol+
-  wind+
-  water_lv1+
-  leaf_high+
-  DEM.Cerrado+
-  decliv.Cerrado+
-  land_use+
-  f(x, model = spde, group = x.group, control.group = cg) + 
-  f(u, model = spde, group = u.group, control.group = cg)  
-
-# Initial values of parameters
-ini.zy <- c(-0.05, 5.3, 0.5, 1.62, 4.65, -0.51, 1.3)
-
-res.zy <- inla(formula.zy, family = c("binomial", "gamma"), 
-               data = inla.stack.data(stk.all), control.family = cff, 
-               control.predictor = list(A =inla.stack.A(stk.all),
-                                        link = link), 
-               control.compute=list(dic = TRUE, waic = TRUE, cpo = TRUE,
-                                    config = TRUE),
-               control.results = cres, control.inla = cinla, 
-               control.mode = list(theta = ini.zy, restart = TRUE))
-
-#Model with only the shared component
-formula.sh <- Y ~ -1 + z.intercept + y.intercept + 
-  precip+
-  temp_2m+
-  sol+
-  wind+
-  water_lv1+
-  leaf_high+
-  DEM.Cerrado+
-  decliv.Cerrado+
-  land_use+
-  f(x, model = spde, group = x.group, control.group = cg) + 
-  f(xc, copy = "x", fixed = FALSE, group = xc.group) 
-
-# Initial values of parameters
-ini.sh <- c(-0.187, 5.27, 0.47, 1.47, 0.17)
-
-res.sh <- inla(formula.sh, family = c("binomial", "gamma"), 
-               data = inla.stack.data(stk.all), control.family = cff, 
-               control.predictor = list(
-                 A = inla.stack.A(stk.all), link = link), 
-               control.compute = list(dic = TRUE, waic = TRUE, cpo = TRUE,
-                                      config = TRUE),
-               control.results = cres, control.inla = cinla,
-               control.mode = list(theta = ini.sh, restart = TRUE)) 
-#Compute CPO
-sum(res.jo$cpo$failure, na.rm = TRUE)
-sum(res.zy$cpo$failure, na.rm = TRUE)
-sum(res.sh$cpo$failure, na.rm = TRUE)
-
-res.jo <- inla.cpo(res.jo, verbose = FALSE)
-
-res.zy <- inla.cpo(res.zy, verbose = FALSE)
-res.sh <- inla.cpo(res.sh, verbose = FALSE)
-
-#Comparing results
-getfit <- function(r) {
-  fam <- r$dic$family
-  data.frame(dic = tapply(r$dic$local.dic, fam, sum), 
-             waic = tapply(r$waic$local.waic, fam, sum), 
-             cpo = tapply(r$cpo$cpo, fam, 
-                          function(x) - sum(log(x), na.rm = TRUE)))
-}
-rbind(separate = getfit(res.jo), 
-      joint = getfit(res.zy), 
-      oshare = getfit(res.sh))[c(1, 3, 5, 2, 4, 6),]
-
-#Visualizing some results#
-##########################
-#Extract the useful indices
-idx.z <- inla.stack.index(stk.all, 'obs.fireprob')$data
-idx.y <- inla.stack.index(stk.all, 'obs.fireexten')$data
-idx.zp <- inla.stack.index(stk.all, 'fireprob.pred')$data
-idx.yp <- inla.stack.index(stk.all, 'fireexten.pred')$data
-
-#Projector from the mesh nodes to a fine grid
-wh <- apply(bbox(bdry), 1, diff)
-nxy <- round(300 * wh / wh[1])
-pgrid <- inla.mesh.projector(mesh3, xlim = bbox(bdry)[1, ], 
-                             ylim = bbox(bdry)[2, ], dims = nxy)
-
-#Discard the values interpolated outside the border
-ov <- over(SpatialPoints(pgrid$lattice$loc, 
-                         border@proj4string), bdry)
-id.out <- which(is.na(ov))
-
-#Posterior mean of the probability of rain at each time known
-stpred <- matrix(res.jo$summary.fitted.values$mean[idx.zp], 
-                 spde$n.spde)
-
-par(mfrow = c(4, 2), mar =c(0, 0, 0, 0)) 
-for (j in 1:m) {
-  pj <- inla.mesh.project(pgrid, field = stpred[, j])
-  pj[id.out] <- NA
-  book.plot.field(list(x = pgrid$x, y = pgrid$y, z = pj),
-                  zlim = c(0, 1))
-}
