@@ -14,7 +14,7 @@ rasterOptions(tmpdir=file.path("/Volumes/Extreme SSD/Heitor/BD_SIG/temp"),
 
 
 # If you have lots of files then you can make a loop to do all this for you
-setwd("/Volumes/Extreme SSD/Heitor/BD_SIG/AVHRR_LTDR_Fire/Grid")
+setwd("Data/AVHRR_LTDR_Fire/Grid")
 
 files<-list.files(pattern = "ESACCI-L4_FIRE-BA-AVHRR-LTDR-", recursive = TRUE)
 files
