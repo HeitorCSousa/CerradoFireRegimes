@@ -3192,5 +3192,5 @@ autoplot(pca.fire,
          loadings.label = TRUE, alpha=.5) +
   scale_color_manual(values = c("#fdae61","#2c7bb6"))
 
-writeRaster(Pred_ras5,"FireRegimesCerrado_MODIS_2clusters.grd",overwrite=T)
+# writeRaster(Pred_ras5,"FireRegimesCerrado_MODIS_2clusters.grd",overwrite=T)
 
