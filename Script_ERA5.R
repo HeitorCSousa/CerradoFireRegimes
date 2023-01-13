@@ -32,8 +32,8 @@ sapply(package_vec, install.load.package)
 
 #Register the user ID and API Key as characters 
 
-API_User <- "86619"
-API_Key <- "151ac044-f8cf-4ee0-aa00-64da02cf0295"
+API_User <- "API_User"#Replace with your API user
+API_Key <- "API_Key"#Replace with your API key
 
 #A data directory for all of our individual Kriging processes
 #A shapefile directory (located within our data directory) for 
@@ -45,7 +45,7 @@ Dir.Shapes <- file.path(Dir.Data, "Shapes") # folder path for shapefiles
 Dirs <- sapply(c(Dir.Data, Dir.Shapes), function(x) if (!dir.exists(x)) dir.create(x))
 
 #Read and plot Cerrado area
-CerradoMask <- readOGR(Dir.Shapes,"Cerrado", verbose = FALSE) # read
+CerradoMask <- readOGR("Data/AVHRR_LTDR_Fire/Cerrado", verbose = FALSE) # read
 
 windows(10,10)
 ggplot() +
@@ -53,42 +53,8 @@ ggplot() +
   theme_bw() +
   labs(x = "Longitude", y = "Latitude")
 
-#### STATE MASK (for within-nation borders)
-if (!file.exists(file.path(Dir.Shapes, "StateMask.zip"))) { # if not downloaded yet
-  download.file("https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_1_states_provinces.zip",
-                destfile = file.path(Dir.Shapes, "StateMask.zip")
-  ) # download cultural vector
-  unzip(file.path(Dir.Shapes, "StateMask.zip"), exdir = Dir.Shapes) # unzip data
-}
 
-StateMask <- readOGR(Dir.Shapes, "ne_10m_admin_1_states_provinces", verbose = FALSE) # read
-
-windows(20,10)
-ggplot() +
-  geom_polygon(data = StateMask, aes(x = long, y = lat, group = group), colour = "darkred", fill = "black") +
-  coord_sf(xlim = c(-85, -25), ylim = c(-60, 20), expand = FALSE) +
-  theme_bw() +
-  labs(x = "Longitude", y = "Latitude")
-
-#### ECOREGIONS (for ecoregional borders)
-if (!file.exists(file.path(Dir.Shapes, "WWF_ecoregions"))) { # if not downloaded yet
-  download.file("http://assets.worldwildlife.org/publications/15/files/original/official_teow.zip",
-                destfile = file.path(Dir.Shapes, "wwf_ecoregions.zip")
-  ) # download regions
-  unzip(file.path(Dir.Shapes, "wwf_ecoregions.zip"), exdir = file.path(Dir.Shapes, "WWF_ecoregions")) # unzip data
-}
-
-EcoregionMask <- readOGR(file.path(Dir.Shapes, "WWF_ecoregions", "official", "wwf_terr_ecos.shp"), verbose = FALSE) # read
-
-windows(20,10)
-ggplot() +
-  geom_polygon(data = EcoregionMask, aes(x = long, y = lat, group = group), colour = "darkred", fill = "black") +
-  coord_sf(xlim = c(-85, -25), ylim = c(-60, 20), expand = FALSE) +
-  theme_bw() +
-  labs(x = "Longitude", y = "Latitude")
-
-
-rasterOptions(tmpdir=file.path("D:/Documentos/Raster")) 
+# rasterOptions(tmpdir=file.path("D:/Documentos/Raster")) 
 
 ####################
 #Plotting functions#
@@ -293,21 +259,6 @@ Cerrado_Raw_water_lv2 <- download_ERA(
 
 Cerrado_Raw_water_lv2
 
-Cerrado_Raw_water_veg <- download_ERA(
-  Variable = "skin_reservoir_content",
-  DataSet = "era5-land",
-  DateStart = "1982-01-01",
-  DateStop = "2020-12-31",
-  TResolution = "month",
-  Extent = CerradoMask,
-  Dir = Dir.CerradoExt,
-  API_User = API_User,
-  API_Key = API_Key,
-  SingularDL = TRUE
-)
-
-Cerrado_Raw_water_veg
-
 Cerrado_Raw_precip <- download_ERA(
   Variable = "total_precipitation",
   DataSet = "era5-land",
@@ -322,36 +273,6 @@ Cerrado_Raw_precip <- download_ERA(
   )
 
 Cerrado_Raw_precip
-
-Cerrado_Raw_leaf_high <- download_ERA(
-  Variable = "leaf_area_index_high_vegetation",
-  DataSet = "era5-land",
-  DateStart = "1982-01-01",
-  DateStop = "2020-12-31",
-  TResolution = "month",
-  Extent = CerradoMask,
-  Dir = Dir.CerradoExt,
-  API_User = API_User,
-  API_Key = API_Key,
-  SingularDL = TRUE
-)
-
-Cerrado_Raw_leaf_high
-
-Cerrado_Raw_leaf_low <- download_ERA(
-  Variable = "leaf_area_index_low_vegetation",
-  DataSet = "era5-land",
-  DateStart = "1982-01-01",
-  DateStop = "2020-12-31",
-  TResolution = "month",
-  Extent = CerradoMask,
-  Dir = Dir.CerradoExt,
-  API_User = API_User,
-  API_Key = API_Key,
-  SingularDL = TRUE
-)
-
-Cerrado_Raw_leaf_low
 
 Cerrado_Raw_total_evap <- download_ERA(
   Variable = "total_evaporation",
@@ -477,8 +398,6 @@ writeRaster(Cerrado_Raw_sol,"Cerrado_sol.grd")
 writeRaster(Cerrado_Raw_total_evap,"Cerrado_total_evap.grd")
 writeRaster(Cerrado_Raw_pot_evap,"Cerrado_pot_evap.grd")
 writeRaster(Cerrado_Raw_water_deficit,"Cerrado_water_deficit.grd")
-writeRaster(Cerrado_Raw_leaf_high,"Cerrado_leaf_high.grd")
-writeRaster(Cerrado_Raw_leaf_low,"Cerrado_leaf_low.grd")
 writeRaster(Cerrado_Raw_water_lv1,"Cerrado_water_lv1.grd")
 writeRaster(Cerrado_Raw_water_lv2,"Cerrado_water_lv2.grd")
 writeRaster(Cerrado_Raw_precip,"Cerrado_precip.grd")
@@ -495,35 +414,3 @@ Raw_df_test <- as.data.frame(Cerrado_Raw_wind, xy = TRUE) # turn raster into dat
 windows(10,10)
 plot(Cerrado_Raw_temp[[1:12]])
 
-#############################
-#Covariates for krigin - DEM#
-#############################
-
-Cerrado_Raw_temp<-stack("Cerrado_temp_2m.grd")
-z1.agreg<-stack("E:/Heitor/BD_SIG/MODIS_Fire/MCD64A1/Bbin.all.Cerrado.MCD64A1.2.5km.grd")
-
-BA.all.Cerrado.LTDR<-stack("E:/Heitor/BD_SIG/AVHRR_LTDR_Fire/Pixel/BA.all.LTDR.Cerrado.tif")
-BA.all.Cerrado.LTDR
-
-Covs_ls <- download_DEM(
-  Train_ras = Cerrado_Raw_temp,
-  Target_res = BA.all.Cerrado.LTDR[[1]],
-  Dir = Dir.CerradoExt,
-  Shape = CerradoMask,
-  Keep_Temporary = TRUE
-)
-
-windows(20,10)
-Plot_Covs(Covs_ls,CerradoMask)
-
-KrigStart <- Sys.time()
-Cerrado_temp_Krig <- krigR(
-  Data = Cerrado_Raw_temp, # data we want to krig as a raster object
-  Covariates_coarse = Covs_ls[[1]], # training covariate as a raster object
-  Covariates_fine = Covs_ls[[2]], # target covariate as a raster object
-  Keep_Temporary = FALSE, # we don't want to retain the individually kriged layers on our hard-drive
-  Cores = 4, # we want to krig on just one core
-  FileName = "Cerrado_Ext.nc", # the file name for our full kriging output
-  Dir = Dir.CerradoExt # which directory to save our final input in
-)
-KrigStop <- Sys.time()
