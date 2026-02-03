@@ -12,38 +12,38 @@ library(ggplot2)
 # --- 1. CONFIGURATION ---------------------------------------------------------
 
 # Load Vectors (Must be created via prepare_vectors.R first)
-vectors <- readRDS("ShinyApp/vectors_cerrado.rds")
+vectors <- readRDS("ShinyApp/CerradoFireRegimes_DSS/vectors_cerrado.rds")
 
 # File Paths
-global_file <- "ShinyApp/Fire_Regimes_Global.tif"
+global_file <- "ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_Global.tif"
 
 decade_files <- c(
-  "1985-1994" = "ShinyApp/Fire_Regimes_1985_1994.tif",
-  "1995-2004" = "ShinyApp/Fire_Regimes_1995_2004.tif",
-  "2005-2014" = "ShinyApp/Fire_Regimes_2005_2014.tif",
-  "2015-2024" = "ShinyApp/Fire_Regimes_2015_2024.tif"
+  "1985-1994" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_1985_1994.tif",
+  "1995-2004" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_1995_2004.tif",
+  "2005-2014" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_2005_2014.tif",
+  "2015-2024" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_2015_2024.tif"
 )
 
 metric_files <- list(
-  "Fire frequency in Jan" = "ShinyApp/Fire_Freq_Jan.tif",
-  "Fire frequency in Feb" = "ShinyApp/Fire_Freq_Feb.tif",
-  "Fire frequency in Mar" = "ShinyApp/Fire_Freq_Mar.tif",
-  "Fire frequency in Apr" = "ShinyApp/Fire_Freq_Apr.tif",
-  "Fire frequency in May" = "ShinyApp/Fire_Freq_May.tif",
-  "Fire frequency in Jun" = "ShinyApp/Fire_Freq_Jun.tif",
-  "Fire frequency in Jul" = "ShinyApp/Fire_Freq_Jul.tif",
-  "Fire frequency in Aug" = "ShinyApp/Fire_Freq_Aug.tif",
-  "Fire frequency in Sep" = "ShinyApp/Fire_Freq_Sep.tif",
-  "Fire frequency in Oct" = "ShinyApp/Fire_Freq_Oct.tif",
-  "Fire frequency in Nov" = "ShinyApp/Fire_Freq_Nov.tif",
-  "Fire frequency in Dec" = "ShinyApp/Fire_Freq_Dec.tif",
-  "Fire Integrity Var" = "ShinyApp/Fire_Integrity_Var.tif",
-  "Fire Core Size" = "ShinyApp/Fire_Core_Size.tif",
-  "Fire Shape Regularity" = "ShinyApp/Fire_Shape_Reg.tif",
-  "Fire Internal Heterog" = "ShinyApp/Fire_Internal_Heterog.tif",
-  "Fire Isolation Var" = "ShinyApp/Fire_Isolation_Var.tif",
-  "Fire Density" = "ShinyApp/Fire_Density.tif",
-  "Fire Fragmentation" = "ShinyApp/Fire_Fragmentation.tif"
+  "Fire frequency in Jan" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Jan.tif",
+  "Fire frequency in Feb" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Feb.tif",
+  "Fire frequency in Mar" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Mar.tif",
+  "Fire frequency in Apr" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Apr.tif",
+  "Fire frequency in May" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_May.tif",
+  "Fire frequency in Jun" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Jun.tif",
+  "Fire frequency in Jul" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Jul.tif",
+  "Fire frequency in Aug" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Aug.tif",
+  "Fire frequency in Sep" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Sep.tif",
+  "Fire frequency in Oct" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Oct.tif",
+  "Fire frequency in Nov" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Nov.tif",
+  "Fire frequency in Dec" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Dec.tif",
+  "Fire Integrity Var" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Integrity_Var.tif",
+  "Fire Core Size" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Core_Size.tif",
+  "Fire Shape Regularity" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Shape_Reg.tif",
+  "Fire Internal Heterog" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Internal_Heterog.tif",
+  "Fire Isolation Var" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Isolation_Var.tif",
+  "Fire Density" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Density.tif",
+  "Fire Fragmentation" = "ShinyApp/CerradoFireRegimes_DSS/Fire_Fragmentation.tif"
 )
 
 # Palettes
