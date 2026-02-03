@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>readme</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="README_files/libs/clipboard/clipboard.min.js"></script>
+<script src="README_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="README_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="README_files/libs/quarto-html/popper.min.js"></script>
+<script src="README_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="README_files/libs/quarto-html/anchor.min.js"></script>
+<link href="README_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="README_files/libs/quarto-html/quarto-syntax-highlighting-de070a7b0ab54f8780927367ac907214.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="README_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="README_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="README_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="spatio-temporal-dynamics-of-fire-regimes-in-the-cerrado" class="level1">
+<h1>Spatio-Temporal Dynamics of Fire Regimes in the Cerrado</h1>
+<p><strong>Description:</strong> This repository contains the complete code and data processing pipeline used to analyze, map, and model fire regimes across the Cerrado biome (1985–2024). The project integrates 40 years of satellite fire data (MapBiomas) with climatic, topographic, and anthropogenic predictors to identify distinct fire regime typologies, assess their stability over time, and project spatial trends.</p>
+<section id="repository-structure" class="level2">
+<h2 class="anchored" data-anchor-id="repository-structure">Repository Structure</h2>
+<p>The project is organized into five main directories, reflecting the workflow from raw data processing to the final decision support system.</p>
+<section id="scripts" class="level3">
+<h3 class="anchored" data-anchor-id="scripts">📂 <code>Scripts/</code></h3>
+<p>Contains the three primary R scripts required to reproduce the analysis. The workflow is sequential: 1. <strong><code>1_Script_MapbiomasFogo.R</code></strong>: The core processing engine. It ingests raw MapBiomas Fire rasters, generates binary monthly fire maps, and computes landscape metrics (e.g., density, cohesion, shape) on a 9km hexagonal grid. It also handles data cleaning and VIF analysis. 2. <strong><code>2_Predictors.R</code></strong>: The environmental data aggregator. It processes and aligns multi-source predictors (ERA5-Land climate, MapBiomas LULC, NDVI, Population Density, Elevation) to the same spatial grid as the fire metrics. 3. <strong><code>3_Cerrado_SpT_FireRegimes.R</code></strong>: The statistical modeling suite. It performs the Model-Based Clustering (to define regimes), runs Big Generalized Additive Models (BAMs) to identify drivers, calculates regime transition probabilities, and analyzes spatio-temporal trends using Random Forests and time-series decomposition.</p>
+<section id="scripts1_script_mapbiomasfogo.r" class="level4">
+<h4 class="anchored" data-anchor-id="scripts1_script_mapbiomasfogo.r"><code>Scripts/1_Script_MapbiomasFogo.R</code></h4>
+<p><strong>Description:</strong> This is the primary data processing pipeline. It transforms raw monthly fire rasters (MapBiomas Fire Collection) into the clean, spatially explicit datasets used for analysis and modeling.</p>
+<p><strong>Workflow:</strong> 1. <strong>Preprocessing:</strong> Merges monthly GeoTIFFs into annual rasters and reprojects them to a metric CRS (SIRGAS 2000 / Brazil Polyconic, EPSG:5880). 2. <strong>Binarization:</strong> Converts continuous fire data into binary (burned/unburned) monthly rasters. 3. <strong>Metric Calculation:</strong> Computes landscape metrics (e.g., <code>lsm_c_pd</code>, <code>lsm_c_split</code>) on a 9km hexagonal grid using the <code>landscapemetrics</code> package. This step utilizes parallel processing and batch handling to manage memory. 4. <strong>Data Cleaning:</strong> * Filters metrics based on missing data thresholds (&gt;5% missingness removed). * Performs Variance Inflation Factor (VIF) analysis to remove collinear variables. 5. <strong>Exploratory Analysis:</strong> Generates PCA biplots and correlation matrices to visualize relationships between metrics. 6. <strong>Fire Occurrence:</strong> Generates a binary fire occurrence dataset aligned with the master grid. 7. <strong>Visualization:</strong> Exports decadal map time-series (PDF format) for visual inspection of metric trends.</p>
+<p><strong>Inputs Required:</strong> * Raw MapBiomas Fire GeoTIFFs (folder: <code>~/Documents/mapbiomas_fogo_4</code> or configured path). * Cerrado geometry file: <code>Data/Cerrado.rds</code>.</p>
+<p><strong>Outputs Generated:</strong> * <strong>Final Data Objects:</strong> * <code>Data/final_clean_data.rds</code>: The cleaned dataframe of landscape fire metrics. * <code>Data/final_fire_occ_data.rds</code>: The binary fire occurrence dataset. * <strong>Figures:</strong> * <code>Figs/corrplot_firemetrics.pdf</code>: Correlation matrix of selected metrics. * <code>Figs/PCA_firemetrics.pdf</code>: Principal Component Analysis showing metric trends by decade. * <code>Figs/decadalmaps_*.pdf</code>: Spatiotemporal maps for individual metrics (e.g., <code>cai_sd</code>, <code>split</code>, <code>pd</code>).</p>
+</section>
+<section id="scripts2_predictors.r" class="level4">
+<h4 class="anchored" data-anchor-id="scripts2_predictors.r"><code>Scripts/2_Predictors.R</code></h4>
+<p><strong>Description:</strong> This script aggregates and standardizes the environmental and anthropogenic predictors used to model fire regimes. It aligns disparate data sources (Land Use, Climate, Topography, Population, and Vegetation Indices) onto the common 9km hexagonal grid defined in the previous step.</p>
+<p><strong>Workflow:</strong> 1. <strong>Land Use &amp; Land Cover (LULC):</strong> * <strong>Source:</strong> MapBiomas Collection 10 (Annual Maps). * <strong>Processing:</strong> Calculates the fractional coverage of each LULC class within each 9km grid cell using parallel processing (<code>foreach</code> + <code>exactextractr</code>). * <strong>Simplification:</strong> Aggregates detailed classes into functional groups (e.g., “Forest”, “Savanna”, “Temporary Crops”) and calculates total “Native” vs.&nbsp;“Anthropic” areas per cell/year. 2. <strong>NDVI (Vegetation Greenness):</strong> * <strong>Source:</strong> Landsat Collection 2 Level 2 Annual Composites. * <strong>Processing:</strong> Resamples annual NDVI rasters to match the analysis grid resolution and CRS. 3. <strong>Population Density:</strong> * <strong>Source:</strong> <code>popgrids</code> package (interpolated global gridded population). * <strong>Processing:</strong> Generates annual population density surfaces via interpolation between decadal census years (1985–2030) and extracts mean values per grid cell. 4. <strong>Climate (ERA5-Land):</strong> * <strong>Source:</strong> Copernicus Climate Change Service (ERA5-Land monthly data). * <strong>Processing:</strong> Projects variables (Temperature, Precipitation, Evapotranspiration, Wind, Soil Water, etc.) to SIRGAS 2000. * <strong>Derivation:</strong> Calculates derived variables like Water Deficit (<code>total_evap - pot_evap</code>) and average Wind Speed. Computes monthly statistics (Mean, Min, Max, SD) for every grid cell. 5. <strong>Terrain:</strong> * <strong>Source:</strong> Amazon Web Services Terrain Tiles (via <code>elevatr</code>). * <strong>Processing:</strong> Derives topographic metrics (Slope, Aspect, TPI, TRI) from the DEM and aligns them to the climate grid.</p>
+<p><strong>Inputs Required:</strong> * <strong>Raw Data Paths:</strong> The script assumes specific local paths (e.g., <code>~/Documents/mapbiomas_lulc_10</code>, <code>~/Documents/ERA5</code>). <strong>User Action:</strong> You must adjust the <code>data_directory</code> variables at the top of each section to point to your local data storage. * <strong>Vector Data:</strong> <code>Data/Cerrado.rds</code> (Biome boundary).</p>
+<p><strong>Outputs Generated:</strong> * <code>Data/lulc_predictors.rds</code>: Time-series of fractional land cover per plot. * <code>Data/ndvi_predictor.rds</code>: Time-series of mean annual NDVI per plot. * <code>Data/pop_predictor.rds</code>: Time-series of population density per plot. * <code>Data/climate_predictors.rds</code>: Time-series of monthly climatic variables per plot. * <code>Data/terrain_predictors.rds</code>: Static topographic variables per plot.</p>
+</section>
+<section id="scripts3_cerrado_spt_fireregimes.r" class="level4">
+<h4 class="anchored" data-anchor-id="scripts3_cerrado_spt_fireregimes.r"><code>Scripts/3_Cerrado_SpT_FireRegimes.R</code></h4>
+<p><strong>Description:</strong> This script performs the core statistical analysis and modeling of the study. It merges the processed metrics and predictors, runs Generalized Additive Models (GAMs) to identify drivers, classifies fire regimes using model-based clustering, and analyzes temporal trends via time-series decomposition.</p>
+<p><strong>Workflow:</strong> 1. <strong>Data Merging &amp; Preprocessing:</strong> * Integrates all intermediate datasets (<code>final_clean_data.rds</code>, <code>climate_predictors.rds</code>, <code>lulc_predictors.rds</code>, etc.) into a single master dataframe. * Standardizes predictor variables (scaling) to ensure comparability in modeling. * Handles missing data imputation where appropriate for specific model structures.</p>
+<ol start="2" type="1">
+<li><strong>Fire Regime Classification &amp; Validation:</strong>
+<ul>
+<li><strong>Clustering:</strong> Uses <strong>Model-Based Clustering (<code>mclust</code>)</strong> to identify distinct fire regimes based on the multivariate “fingerprint” of fire metrics (density, size, shape, cohesion, etc.).</li>
+<li><strong>Predictability Test:</strong> Trains a <strong>Random Forest classifier</strong> on the identified clusters to assess regime predictability (reporting error rates and Brier scores).</li>
+<li><strong>Feature Selection:</strong> Applies the <strong>Boruta algorithm</strong> to identify the most important metrics defining each regime.</li>
+</ul></li>
+<li><strong>Decadal Transitions &amp; Stability:</strong>
+<ul>
+<li><strong>Transition Analysis:</strong> Calculates transition probability matrices to quantify how fire regimes shift between decades (e.g., 1985–1994 to 2015–2024).</li>
+<li><strong>Stability Testing:</strong> Performs permutation tests to assess if regime persistence and transitions depart from random expectations.</li>
+<li><strong>Visualization:</strong> Generates Sankey diagrams to map the flow of landscape transformation from native to anthropogenic fire regimes.</li>
+</ul></li>
+<li><strong>Modeling Environmental Drivers (BAMs):</strong>
+<ul>
+<li>Fits <strong>Big Generalized Additive Models (BAMs)</strong> using the <code>mgcv</code> package to predict fire metrics and occurrence.</li>
+<li>Models non-linear relationships with climatic, topographic, and anthropogenic predictors.</li>
+<li>Includes spatial smoothers (Gaussian Markov Random Fields) to account for spatial autocorrelation.</li>
+</ul></li>
+<li><strong>Spatio-Temporal Trend Analysis:</strong>
+<ul>
+<li><strong>Time-Series Decomposition:</strong> Applies the <strong>X-13ARIMA-SEATS</strong> method to decompose metric time-series into Seasonal, Trend, and Irregular components.</li>
+<li><strong>Spatial Trends:</strong> Quantifies spatially varying trends (e.g., latitudinal gradients) to map where fire metrics are increasing or decreasing across the biome.</li>
+<li><strong>Evolutive Seasonality:</strong> Tests for shifts in the timing and intensity of the fire season over the 40-year period.</li>
+</ul></li>
+</ol>
+<p><strong>Inputs Required:</strong> * All outputs from <code>Scripts/1_Script_MapbiomasFogo.R</code> and <code>Scripts/2_Predictors.R</code> (located in the <code>Data/</code> folder).</p>
+<p><strong>Outputs Generated:</strong> * <strong>Models:</strong> Saved <code>.rds</code> objects for all fitted BAMs (e.g., <code>Models/fire_occurrence_bam.rds</code>) and the Random Forest classifier. * <strong>Figures:</strong> * <code>Figs/heatmap_fire_mclust_parameter.pdf</code>: Characterization of the identified fire regimes. * <code>Figs/map_fire_regimes.pdf</code>: Spatial distribution of regimes across the Cerrado. * <code>Figs/sankey_transition.pdf</code>: Visualization of regime transitions over time. * <code>Figs/spatial_trends_*.pdf</code>: Maps showing the strength and direction of trends for each metric. * <code>Figs/partial_effect_*.pdf</code>: Visual response curves for environmental predictors. * <strong>Tables:</strong> * <code>Output/results/gam_performance.csv</code>: Summary of model fit statistics. * <code>Output/results/transition_matrices.csv</code>: Probability tables of regime shifts.</p>
+</section>
+</section>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">📂 <code>Data/</code></h3>
+<p>Stores the processed input data and intermediate objects required for modeling. * <strong>Processed Predictors:</strong> <code>.rds</code> files for Climate, LULC, NDVI, Population, and Terrain variables. * <strong>Final Datasets:</strong> <code>final_clean_data.rds</code> (the master dataframe for modeling) and <code>final_fire_occ_data.rds</code> (binary occurrence data). * <strong>Spatial Files:</strong> <code>Cerrado.rds</code> (biome boundary) and grid geometries. * <em>Note: Raw heavy raster files (e.g., original MapBiomas TIFFs, ERA5 GRIBs) are not included due to size constraints but can be downloaded from their respective sources listed in the scripts.</em></p>
+</section>
+<section id="output" class="level3">
+<h3 class="anchored" data-anchor-id="output">📂 <code>Output/</code></h3>
+<p>Contains the statistical and analytical results generated by the scripts. * <strong><code>results/</code></strong>: Model performance tables (GAM R²/Deviance), Random Forest error rates, and variable importance scores. * <strong><code>results_model_evaluation/</code></strong>: Cross-validation metrics and sensitivity analyses. * <strong><code>Decadal_Fire_Metrics/</code></strong>: Aggregated metric summaries used for visualizing long-term trends. * <strong><code>Models/</code></strong>: Saved R objects for the fitted BAMs and Random Forest classifiers (allowing users to predict without re-training).</p>
+</section>
+<section id="figs" class="level3">
+<h3 class="anchored" data-anchor-id="figs">📂 <code>Figs/</code></h3>
+<p>The repository for all static visualizations produced by the analysis. * <strong><code>map_fire_regimes.pdf</code></strong>: The final classification map of Cerrado fire regimes. * <strong><code>sankey_transition.pdf</code></strong>: Visualizing the flow of regime shifts over four decades. * <strong><code>PCA_firemetrics.pdf</code></strong>: Biplots showing the trajectory of fire characteristics through time. * <strong><code>spatial_trends_*.pdf</code></strong>: Maps illustrating where specific fire metrics (e.g., frequency, size) are statistically increasing or decreasing.</p>
+</section>
+<section id="shinyapp" class="level3">
+<h3 class="anchored" data-anchor-id="shinyapp">📂 <code>ShinyApp/</code></h3>
+<p><strong>Description:</strong> This directory contains the source code for the <strong>Cerrado Fire Regimes Decision Support System (DSS)</strong>. It includes the data optimization pipeline and the interactive web application used to visualize the study’s results.</p>
+<p><strong>Contents:</strong></p>
+<ul>
+<li><strong><code>0_Prepare_Data_ShinyApp.R</code></strong>:
+<ul>
+<li><strong>Purpose:</strong> The optimization engine. It takes the heavy, high-resolution outputs from the main analysis (<code>Scripts/3_Cerrado_SpT_FireRegimes.R</code>) and transforms them into lightweight, spatially simplified objects suitable for web deployment.</li>
+<li><strong>Key Operations:</strong> Aggregates metrics by municipality, simplifies vector geometries (using <code>rmapshaper</code> to reduce load times), and pre-calculates summary statistics for the dashboard value boxes.</li>
+<li><strong>Output:</strong> Generates the optimized <code>.rds</code> files stored in the <code>CerradoFireRegimes_DSS</code> folder.</li>
+</ul></li>
+<li><strong><code>1_ShinyApp_Cerrado_FireRegimes.R</code></strong>:
+<ul>
+<li><strong>Purpose:</strong> The local development version of the DSS.</li>
+<li><strong>Functionality:</strong> Contains the combined <code>ui</code> (User Interface) and <code>server</code> logic in a single script. It is designed for rapid testing, debugging, and feature iteration on a local machine before deployment.</li>
+</ul></li>
+<li><strong><code>CerradoFireRegimes_DSS/</code></strong>:
+<ul>
+<li><strong>Purpose:</strong> The production-ready folder configured for deployment to <strong>shinyapps.io</strong>.</li>
+<li><strong>Structure:</strong>
+<ul>
+<li><code>ui.R</code> &amp; <code>server.R</code>: The split application logic required for stable server deployment.</li>
+<li><code>rsconnect/</code>: Stores web assets (images, CSS styles) for the interface.</li>
+</ul></li>
+<li><strong>Usage:</strong> This is the specific folder targeted when publishing the application to the web.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="reproducibility">Reproducibility</h2>
+<p>To reproduce the analysis: 1. Clone this repository. 2. Ensure you have the raw data sources listed in <code>Scripts/1_Script_MapbiomasFogo.R</code> and <code>Scripts/2_Predictors.R</code>. 3. Run the scripts in numerical order (1 → 2 → 3). 4. Launch the Shiny App via <code>ShinyApp/CerradoFireRegimes_DSS/1_ShinyApp_Cerrado_FireRegimes.R</code> to visualize the results.</p>
+</section>
+<section id="citation" class="level2">
+<h2 class="anchored" data-anchor-id="citation">Citation</h2>
+<p>If you use this code or data, please cite the associated manuscript and the Zenodo DOI: * [Insert Manuscript Citation] * [Insert Zenodo DOI]</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
