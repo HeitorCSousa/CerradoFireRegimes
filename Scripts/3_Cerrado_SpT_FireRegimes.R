@@ -68,7 +68,7 @@ legend_dt <- read.delim2(
 )
 
 lulc_df <- readRDS(
-  "~/Documents/mapbiomas_lulc_10/yearly_lulc_results/lulc_predictors.rds"
+  "~Data/lulc_predictors.rds"
 )
 
 grid_polygons <- terra::vect("grid_polygons.shp")
@@ -223,8 +223,8 @@ dev.off()
 
 ## NDVI --------------------------------------------------------------------
 
-# Save data
-ndvi_df <- readRDS("~/Documents/Cerrado_NDVI/ndvi_predictor.rds")
+# Read data
+ndvi_df <- readRDS("Data/ndvi_predictor.rds")
 skim(ndvi_df)
 
 ndvi_df %>%
@@ -236,8 +236,8 @@ ndvi_df %>%
 
 ## Population density ------------------------------------------------------
 
-# Save data
-pop_df <- readRDS("Modelling/pop_predictor.rds")
+# Read data
+pop_df <- readRDS("Data/pop_predictor.rds")
 skim(pop_df)
 
 pop_df %>%
@@ -249,9 +249,9 @@ pop_df %>%
 
 ## Climate -----------------------------------------------------------------
 
-# Save results
+# Read results
 climate_df <- readRDS(
-  "~/Documents/ERA5/climate_variable_results/climate_predictors.rds"
+  "Data/climate_predictors.rds"
 )
 summary(climate_df[, 27])
 climate_df <- climate_df[, -27]
@@ -293,7 +293,7 @@ corrplot(
 dev.off()
 
 ## Terrain variables -------------------------------------------------------
-terrain_df <- readRDS("~/Documents/Terrain/terrain_predictors.rds")
+terrain_df <- readRDS("Data/terrain_predictors.rds")
 
 usdm::vif(terrain_df[, c(4:8)])
 vif_terrain <- vifstep(terrain_df[, c(4:8)], th = 2)
@@ -334,7 +334,7 @@ dev.off()
 ## Fire occurrence ---------------------------------------------------------
 
 fire_occ_df <- readRDS(
-  "~/Documents/mapbiomas_fogo_4/BINARY_MONTHLY_RASTERS/METRICS_RDS_FILES/FILTERED/final_fire_occ_data.rds"
+  "Data/final_fire_occ_data.rds"
 )
 
 fire_occ_df <- dtplyr::lazy_dt(fire_occ_df, immutable = FALSE)
@@ -432,12 +432,12 @@ fire_occ_df <- fire_occ_df %>%
   dplyr::rename(anthropic_area = anthropic_area_mean) %>%
   as_tibble()
 
-saveRDS(fire_occ_df, "fire_occ_df_modeling.rds")
+saveRDS(fire_occ_df, "Output/fire_occ_df_modeling.rds")
 
 ## Fire regime metrics -----------------------------------------------------
 
 fire_metrics_df <- readRDS(
-  "~/Documents/mapbiomas_fogo_4/BINARY_MONTHLY_RASTERS/METRICS_RDS_FILES/FILTERED/final_clean_data.rds"
+  "Data/final_clean_data.rds"
 )
 
 fire_metrics_df <- dtplyr::lazy_dt(fire_metrics_df, immutable = FALSE)
@@ -498,10 +498,10 @@ fire_metrics_df <- fire_metrics_df %>%
   dplyr::rename(anthropic_area = anthropic_area_mean) %>%
   as_tibble()
 
-saveRDS(fire_metrics_df, "fire_metrics_df_modeling.rds")
+saveRDS(fire_metrics_df, "Data/fire_metrics_df_modeling.rds")
 
 # VIF analysis -----------------------------------------------
-fire_occ_df <- readRDS("fire_occ_df_modeling.rds")
+fire_occ_df <- readRDS("Data/fire_occ_df_modeling.rds")
 vif_analysis <- vifstep(as.data.frame(fire_occ_df[, c(8:16, 33:38)]), th = 2)
 print(vif_analysis)
 
@@ -509,7 +509,7 @@ print(vif_analysis)
 
 ## Fire occurrence ---------------------------------------------------------
 
-fire_occ_df <- readRDS("fire_occ_df_modeling.rds")
+fire_occ_df <- readRDS("Data/fire_occ_df_modeling.rds")
 fire_occ_df <- lazy_dt(fire_occ_df)
 
 fire_occ_ts <- fire_occ_df %>%
@@ -540,7 +540,7 @@ dev.off()
 
 ## Fire metrics ---------------------------------------------------------
 
-fire_metrics_df <- readRDS("fire_metrics_df_modeling.rds")
+fire_metrics_df <- readRDS("Data/fire_metrics_df_modeling.rds")
 
 fire_metrics_df <- lazy_dt(fire_metrics_df)
 
@@ -801,7 +801,7 @@ axis(
 )
 dev.off()
 
-saveRDS(fire_occ_boruta, "Modelling/fire_occ_boruta.rds")
+saveRDS(fire_occ_boruta, "Output/fire_occ_boruta.rds")
 
 ## Fire Scar Integrity Variation (lsm_c_cai_sd) ----------------------------
 fire_cai_sd_boruta <- Boruta(
@@ -868,7 +868,7 @@ axis(
 )
 dev.off()
 
-saveRDS(fire_cai_sd_boruta, "Modelling/fire_cai_sd_boruta.rds")
+saveRDS(fire_cai_sd_boruta, "Output/fire_cai_sd_boruta.rds")
 
 ## Fire Scar Shape Regularity (lsm_c_circle_mn) ----------------------------
 fire_circle_mn_boruta <- Boruta(
@@ -935,7 +935,7 @@ axis(
 )
 dev.off()
 
-saveRDS(fire_circle_mn_boruta, "Modelling/fire_circle_mn_boruta.rds")
+saveRDS(fire_circle_mn_boruta, "Output/fire_circle_mn_boruta.rds")
 
 ## Mean Fire Scar Core Size (lsm_c_core_mn) ----------------------------
 fire_core_mn_boruta <- Boruta(
@@ -1009,7 +1009,7 @@ axis(
 )
 dev.off()
 
-saveRDS(fire_core_mn_boruta, "Modelling/fire_core_mn_boruta.rds")
+saveRDS(fire_core_mn_boruta, "Output/fire_core_mn_boruta.rds")
 
 ## Fire Scar Cohesion Variation (lsm_c_dcore_sd) ----------------------------
 fire_dcore_sd_boruta <- Boruta(
@@ -1082,7 +1082,7 @@ axis(
 )
 dev.off()
 
-saveRDS(fire_core_mn_boruta, "Modelling/fire_dcore_sd_boruta.rds")
+saveRDS(fire_core_mn_boruta, "Output/fire_dcore_sd_boruta.rds")
 
 ## Fire Scar Isolation Variation (lsm_c_enn_sd) ----------------------------
 fire_enn_sd_boruta <- Boruta(
@@ -1151,7 +1151,7 @@ axis(
 )
 dev.off()
 
-saveRDS(fire_enn_sd_boruta, "Modelling/fire_enn_sd_boruta.rds")
+saveRDS(fire_enn_sd_boruta, "Output/fire_enn_sd_boruta.rds")
 
 ## Fire Scar Density (lsm_c_pd) ----------------------------
 fire_pd_boruta <- Boruta(
@@ -1217,7 +1217,7 @@ axis(
 )
 dev.off()
 
-saveRDS(fire_pd_boruta, "Modelling/fire_pd_boruta.rds")
+saveRDS(fire_pd_boruta, "Output/fire_pd_boruta.rds")
 
 ## Fire Scar Fragmentation (lsm_c_split) ----------------------------
 fire_split_boruta <- Boruta(
@@ -1278,7 +1278,7 @@ axis(
 )
 dev.off()
 
-saveRDS(fire_split_boruta, "Modelling/fire_split_boruta.rds")
+saveRDS(fire_split_boruta, "Output/fire_split_boruta.rds")
 
 
 # GAM ---------------------------------------------------------------------
@@ -1458,7 +1458,7 @@ fire_occ_bam_full <- bam(
   knots = list(month = c(0.5, 12.5))
 )
 summary(fire_occ_bam_full)
-saveRDS(fire_occ_bam_full, "fire_occ_bam_full.rds")
+saveRDS(fire_occ_bam_full, "Output/fire_occ_bam_full.rds")
 
 # Simpler model (lulc only native and anthropic areas)
 
@@ -1507,7 +1507,7 @@ bbmle::AICctab(fire_occ_bam_null, fire_occ_bam_full, fire_occ_bam_simple)
 
 # Plots
 # Full model
-fire_occ_bam_full <- readRDS("fire_occ_bam_full.rds")
+fire_occ_bam_full <- readRDS("Output/fire_occ_bam_full.rds")
 
 fire_occ_bam_full_viz <- getViz(fire_occ_bam_full)
 
@@ -2087,7 +2087,7 @@ fire_cai_sd_bam_full <- bam(
   knots = list(month = c(0.5, 12.5))
 )
 summary(fire_cai_sd_bam_full)
-saveRDS(fire_cai_sd_bam_full, "fire_cai_sd_bam_full.rds")
+saveRDS(fire_cai_sd_bam_full, "Output/fire_cai_sd_bam_full.rds")
 
 # Simpler model (lulc only native and anthropic areas)
 
@@ -2140,7 +2140,7 @@ bbmle::AICctab(
 # Plots
 
 # Full model
-fire_cai_sd_bam_full <- readRDS("fire_cai_sd_bam_full.rds")
+fire_cai_sd_bam_full <- readRDS("Output/fire_cai_sd_bam_full.rds")
 fire_cai_sd_bam_full_viz <- getViz(fire_cai_sd_bam_full)
 
 pdf("Figs/fire_cai_sd_bam_full_all.pdf", paper = "a4r", width = 0, height = 0)
@@ -2539,7 +2539,7 @@ fire_circle_mn_bam_full <- bam(
   knots = list(month = c(0.5, 12.5))
 )
 summary(fire_circle_mn_bam_full)
-saveRDS(fire_circle_mn_bam_full, "fire_circle_mn_bam_full.rds")
+saveRDS(fire_circle_mn_bam_full, "Output/fire_circle_mn_bam_full.rds")
 
 # Simpler model (lulc only native and anthropic areas)
 
@@ -2592,7 +2592,7 @@ bbmle::AICctab(
 # Plots
 
 # Full model
-fire_circle_mn_bam_full <- readRDS("fire_circle_mn_bam_full.rds")
+fire_circle_mn_bam_full <- readRDS("Output/fire_circle_mn_bam_full.rds")
 fire_circle_mn_bam_full_viz <- getViz(fire_circle_mn_bam_full)
 
 pdf(
@@ -3039,7 +3039,7 @@ fire_core_mn_bam_full <- bam(
   knots = list(month = c(0.5, 12.5))
 )
 summary(fire_core_mn_bam_full)
-saveRDS(fire_core_mn_bam_full, "fire_core_mn_bam_full.rds")
+saveRDS(fire_core_mn_bam_full, "Output/fire_core_mn_bam_full.rds")
 
 # Compare models
 anova(fire_core_mn_bam_null, fire_core_mn_bam_full, test = "Chisq")
@@ -3051,7 +3051,7 @@ bbmle::AICctab(fire_core_mn_bam_null, fire_core_mn_bam_full)
 # Plots
 
 # Full model
-fire_core_mn_bam_full <- readRDS("fire_core_mn_bam_full.rds")
+fire_core_mn_bam_full <- readRDS("Output/fire_core_mn_bam_full.rds")
 fire_core_mn_bam_full_viz <- getViz(fire_core_mn_bam_full)
 
 pdf("Figs/fire_core_mn_bam_full_all.pdf", paper = "a4r", width = 0, height = 0)
@@ -3353,7 +3353,7 @@ fire_dcore_sd_bam_full <- bam(
   knots = list(month = c(0.5, 12.5))
 )
 summary(fire_dcore_sd_bam_full)
-saveRDS(fire_dcore_sd_bam_full, "fire_dcore_sd_bam_full.rds")
+saveRDS(fire_dcore_sd_bam_full, "Output/fire_dcore_sd_bam_full.rds")
 
 # Simpler model (lulc only native and anthropic areas)
 fire_dcore_sd_bam_simple <- bam(
@@ -3403,7 +3403,7 @@ bbmle::AICctab(
 # Plots
 
 # Full model
-fire_dcore_sd_bam_full <- readRDS("fire_dcore_sd_bam_full.rds")
+fire_dcore_sd_bam_full <- readRDS("Output/fire_dcore_sd_bam_full.rds")
 
 fire_dcore_sd_bam_full_viz <- getViz(fire_dcore_sd_bam_full)
 
@@ -3778,7 +3778,7 @@ fire_enn_sd_bam_full <- bam(
   knots = list(month = c(0.5, 12.5))
 )
 summary(fire_enn_sd_bam_full)
-saveRDS(fire_enn_sd_bam_full, "fire_enn_sd_bam_full.rds")
+saveRDS(fire_enn_sd_bam_full, "Output/fire_enn_sd_bam_full.rds")
 
 # Simpler model (lulc only native and anthropic areas)
 
@@ -3831,7 +3831,7 @@ bbmle::AICctab(
 # Plots
 
 # Full model
-fire_enn_sd_bam_full <- readRDS("fire_enn_sd_bam_full.rds")
+fire_enn_sd_bam_full <- readRDS("Output/fire_enn_sd_bam_full.rds")
 fire_enn_sd_bam_full_viz <- getViz(fire_enn_sd_bam_full)
 
 pdf("Figs/fire_enn_sd_bam_full_all.pdf", paper = "a4r", width = 0, height = 0)
@@ -4245,7 +4245,7 @@ fire_pd_bam_full <- bam(
   knots = list(month = c(0.5, 12.5))
 )
 summary(fire_pd_bam_full)
-saveRDS(fire_pd_bam_full, "fire_pd_bam_full.rds")
+saveRDS(fire_pd_bam_full, "Output/fire_pd_bam_full.rds")
 
 # Simpler model (lulc only native and anthropic areas)
 
@@ -4293,7 +4293,7 @@ bbmle::AICtab(fire_pd_bam_null, fire_pd_bam_full, fire_pd_bam_simple)
 # Plots
 
 # Full model
-fire_pd_bam_full <- readRDS("fire_pd_bam_full.rds")
+fire_pd_bam_full <- readRDS("Output/fire_pd_bam_full.rds")
 fire_pd_bam_full_viz <- getViz(fire_pd_bam_full)
 
 pdf("Figs/fire_pd_bam_full_all.pdf", paper = "a4r", width = 0, height = 0)
@@ -4654,7 +4654,7 @@ fire_split_bam_full <- bam(
   knots = list(month = c(0.5, 12.5))
 )
 summary(fire_split_bam_full)
-saveRDS(fire_split_bam_full, "fire_split_bam_full.rds")
+saveRDS(fire_split_bam_full, "Output/fire_split_bam_full.rds")
 
 # Simpler model (lulc only native and anthropic areas)
 
@@ -4702,7 +4702,7 @@ bbmle::AICctab(fire_split_bam_null, fire_split_bam_full, fire_split_bam_simple)
 # Plots
 
 # Full model
-fire_split_bam_full <- readRDS("fire_split_bam_full.rds")
+fire_split_bam_full <- readRDS("Output/fire_split_bam_full.rds")
 fire_split_bam_full_viz <- getViz(fire_split_bam_full)
 
 pdf("Figs/fire_split_bam_full_all.pdf", paper = "a4r", width = 0, height = 0)
@@ -4940,7 +4940,7 @@ dev.off()
 ### Partial effects -------------------------------------------------------
 
 #### Fire occurrence -------------------------------------------------------
-fire_occ_bam_full <- readRDS("fire_occ_bam_full.rds")
+fire_occ_bam_full <- readRDS("Output/fire_occ_bam_full.rds")
 fire_occ_bam_full_viz <- getViz(fire_occ_bam_full)
 
 p1 <- plot(sm(fire_occ_bam_full_viz, 2)) +
@@ -5032,10 +5032,10 @@ ggsave(
 )
 
 #### Fire abundance and shape -------------------------------------------------------
-fire_pd_bam_full <- readRDS("fire_pd_bam_full.rds")
+fire_pd_bam_full <- readRDS("Output/fire_pd_bam_full.rds")
 fire_pd_bam_full_viz <- getViz(fire_pd_bam_full)
 
-fire_circle_mn_bam_full <- readRDS("fire_circle_mn_bam_full.rds")
+fire_circle_mn_bam_full <- readRDS("Output/fire_circle_mn_bam_full.rds")
 fire_circle_mn_bam_full_viz <- getViz(fire_circle_mn_bam_full)
 
 
@@ -5128,10 +5128,10 @@ ggsave(
 )
 
 #### Fire configuration -------------------------------------------------------
-fire_split_bam_full <- readRDS("fire_split_bam_full.rds")
+fire_split_bam_full <- readRDS("Output/fire_split_bam_full.rds")
 fire_split_bam_full_viz <- getViz(fire_split_bam_full)
 
-fire_enn_sd_bam_full <- readRDS("fire_enn_sd_bam_full.rds")
+fire_enn_sd_bam_full <- readRDS("Output/fire_enn_sd_bam_full.rds")
 fire_enn_sd_bam_full_viz <- getViz(fire_enn_sd_bam_full)
 
 p1 <- plot(sm(fire_split_bam_full_viz, 2)) +
@@ -5223,13 +5223,13 @@ ggsave(
 )
 
 #### Fire interior -------------------------------------------------------
-fire_core_mn_bam_full <- readRDS("fire_core_mn_bam_full.rds")
+fire_core_mn_bam_full <- readRDS("Output/fire_core_mn_bam_full.rds")
 fire_core_mn_bam_full_viz <- getViz(fire_core_mn_bam_full)
 
-fire_cai_sd_bam_full <- readRDS("fire_cai_sd_bam_full.rds")
+fire_cai_sd_bam_full <- readRDS("Output/fire_cai_sd_bam_full.rds")
 fire_cai_sd_bam_full_viz <- getViz(fire_cai_sd_bam_full)
 
-fire_dcore_sd_bam_full <- readRDS("fire_dcore_sd_bam_full.rds")
+fire_dcore_sd_bam_full <- readRDS("Output/fire_dcore_sd_bam_full.rds")
 fire_dcore_sd_bam_full_viz <- getViz(fire_dcore_sd_bam_full)
 
 p1 <- plot(sm(fire_core_mn_bam_full_viz, 2)) +
@@ -5345,7 +5345,7 @@ ggsave(
 ### Partial effect Maps --------------------------------------------------------------------
 
 # Load the Cerrado geometry
-Cerrado <- readRDS("Cerrado.rds")
+Cerrado <- readRDS("Data/Cerrado.rds")
 print(Cerrado)
 
 # --- Define a metric projection for Brazil ---
@@ -7364,10 +7364,14 @@ print(s_table)
 # 4. Save to CSV
 write.csv(
   p_table,
-  "results/bam_fire_occ_parametric_summary.csv",
+  "Output/results/bam_fire_occ_parametric_summary.csv",
   row.names = FALSE
 )
-write.csv(s_table, "results/bam_fire_occ_smooth_summary.csv", row.names = FALSE)
+write.csv(
+  s_table,
+  "Output/results/bam_fire_occ_smooth_summary.csv",
+  row.names = FALSE
+)
 
 ### Fire Scar Integrity Variation (lsm_c_cai_sd) ----------------------------
 
@@ -7394,12 +7398,12 @@ print(s_table)
 # 4. Save to CSV
 write.csv(
   p_table,
-  "results/bam_fire_cai_sd_parametric_summary.csv",
+  "Output/results/bam_fire_cai_sd_parametric_summary.csv",
   row.names = FALSE
 )
 write.csv(
   s_table,
-  "results/bam_fire_cai_sd_smooth_summary.csv",
+  "Output/results/bam_fire_cai_sd_smooth_summary.csv",
   row.names = FALSE
 )
 
@@ -7428,12 +7432,12 @@ print(s_table)
 # 4. Save to CSV
 write.csv(
   p_table,
-  "results/bam_fire_circle_mn_parametric_summary.csv",
+  "Output/results/bam_fire_circle_mn_parametric_summary.csv",
   row.names = FALSE
 )
 write.csv(
   s_table,
-  "results/bam_fire_circle_mn_smooth_summary.csv",
+  "Output/results/bam_fire_circle_mn_smooth_summary.csv",
   row.names = FALSE
 )
 
@@ -7462,12 +7466,12 @@ print(s_table)
 # 4. Save to CSV
 write.csv(
   p_table,
-  "results/bam_fire_core_mn_parametric_summary.csv",
+  "Output/results/bam_fire_core_mn_parametric_summary.csv",
   row.names = FALSE
 )
 write.csv(
   s_table,
-  "results/bam_fire_core_mn_smooth_summary.csv",
+  "Output/results/bam_fire_core_mn_smooth_summary.csv",
   row.names = FALSE
 )
 
@@ -7496,12 +7500,12 @@ print(s_table)
 # 4. Save to CSV
 write.csv(
   p_table,
-  "results/bam_fire_dcore_sd_parametric_summary.csv",
+  "Output/results/bam_fire_dcore_sd_parametric_summary.csv",
   row.names = FALSE
 )
 write.csv(
   s_table,
-  "results/bam_fire_dcore_sd_smooth_summary.csv",
+  "Output/results/bam_fire_dcore_sd_smooth_summary.csv",
   row.names = FALSE
 )
 
@@ -7530,12 +7534,12 @@ print(s_table)
 # 4. Save to CSV
 write.csv(
   p_table,
-  "results/bam_fire_enn_sd_parametric_summary.csv",
+  "Output/results/bam_fire_enn_sd_parametric_summary.csv",
   row.names = FALSE
 )
 write.csv(
   s_table,
-  "results/bam_fire_enn_sd_smooth_summary.csv",
+  "Output/results/bam_fire_enn_sd_smooth_summary.csv",
   row.names = FALSE
 )
 
@@ -7564,7 +7568,7 @@ print(s_table)
 # 4. Save to CSV
 write.csv(
   p_table,
-  "results/bam_fire_pd_parametric_summary.csv",
+  "Output/results/bam_fire_pd_parametric_summary.csv",
   row.names = FALSE
 )
 write.csv(s_table, "results/bam_fire_pd_smooth_summary.csv", row.names = FALSE)
@@ -7594,12 +7598,12 @@ print(s_table)
 # 4. Save to CSV
 write.csv(
   p_table,
-  "results/bam_fire_split_parametric_summary.csv",
+  "Output/results/bam_fire_split_parametric_summary.csv",
   row.names = FALSE
 )
 write.csv(
   s_table,
-  "results/bam_fire_split_smooth_summary.csv",
+  "Output/results/bam_fire_split_smooth_summary.csv",
   row.names = FALSE
 )
 
@@ -7612,7 +7616,7 @@ set.seed(123)
 
 # 1) Load data and fitted model
 
-fire_occ_df <- readRDS("fire_occ_df_modeling.rds")
+fire_occ_df <- readRDS("Data/fire_occ_df_modeling.rds")
 
 
 # 1. Get the starting year and month (requires collecting a small part)
@@ -7770,7 +7774,7 @@ print(cv_occ_summary)
 
 write.csv(
   cv_occ_summary,
-  "results_model_evaluation/cv_occ_summary.csv",
+  "Output/results_model_evaluation/cv_occ_summary.csv",
   row.names = FALSE
 )
 
@@ -7827,7 +7831,7 @@ cv_continuous_metric <- function(
   bind_rows(res)
 }
 
-fire_metrics_df <- readRDS("fire_metrics_df_modeling.rds")
+fire_metrics_df <- readRDS("Data/fire_metrics_df_modeling.rds")
 
 # 1. Get the starting year and month (requires collecting a small part)
 start_info <- fire_metrics_df %>%
@@ -7930,7 +7934,7 @@ print(cv_metrics_summary)
 
 write.csv(
   cv_metrics_summary,
-  "results_model_evaluation/cv_metrics_summary.csv",
+  "Output/results_model_evaluation/cv_metrics_summary.csv",
   row.names = FALSE
 )
 
@@ -7976,7 +7980,7 @@ for (f in 1:n_folds) {
 
 cv_preds <- bind_rows(cv_pred_list)
 
-saveRDS(cv_preds, "cv_fire_occ_predictions.rds")
+saveRDS(cv_preds, "Output/cv_fire_occ_predictions.rds")
 
 pred_summary <- cv_preds |>
   group_by(x, y) |>
@@ -8054,7 +8058,7 @@ for (f in 1:n_folds) {
 
 cv_preds <- bind_rows(cv_pred_list)
 
-saveRDS(cv_preds, "cv_fire_cai_sd_predictions.rds")
+saveRDS(cv_preds, "Output/cv_fire_cai_sd_predictions.rds")
 
 pred_summary <- cv_preds |>
   group_by(x, y) |>
@@ -8132,7 +8136,7 @@ for (f in 1:n_folds) {
 
 cv_preds <- bind_rows(cv_pred_list)
 
-saveRDS(cv_preds, "cv_fire_circle_mn_predictions.rds")
+saveRDS(cv_preds, "Output/cv_fire_circle_mn_predictions.rds")
 
 pred_summary <- cv_preds |>
   group_by(x, y) |>
@@ -8220,7 +8224,7 @@ for (f in 1:n_folds) {
 
 cv_preds <- bind_rows(cv_pred_list)
 
-saveRDS(cv_preds, "cv_fire_core_mn_predictions.rds")
+saveRDS(cv_preds, "Output/cv_fire_core_mn_predictions.rds")
 
 pred_summary <- cv_preds |>
   group_by(x, y) |>
@@ -8298,7 +8302,7 @@ for (f in 1:n_folds) {
 
 cv_preds <- bind_rows(cv_pred_list)
 
-saveRDS(cv_preds, "cv_fire_dcore_sd_predictions.rds")
+saveRDS(cv_preds, "Output/cv_fire_dcore_sd_predictions.rds")
 
 pred_summary <- cv_preds |>
   group_by(x, y) |>
@@ -8386,7 +8390,7 @@ for (f in 1:n_folds) {
 
 cv_preds <- bind_rows(cv_pred_list)
 
-saveRDS(cv_preds, "cv_fire_enn_sd_predictions.rds")
+saveRDS(cv_preds, "Output/cv_fire_enn_sd_predictions.rds")
 
 pred_summary <- cv_preds |>
   group_by(x, y) |>
@@ -8464,7 +8468,7 @@ for (f in 1:n_folds) {
 
 cv_preds <- bind_rows(cv_pred_list)
 
-saveRDS(cv_preds, "cv_fire_pd_predictions.rds")
+saveRDS(cv_preds, "Output/cv_fire_pd_predictions.rds")
 
 pred_summary <- cv_preds |>
   group_by(x, y) |>
@@ -8542,7 +8546,7 @@ for (f in 1:n_folds) {
 
 cv_preds <- bind_rows(cv_pred_list)
 
-saveRDS(cv_preds, "cv_fire_split_predictions.rds")
+saveRDS(cv_preds, "Output/cv_fire_split_predictions.rds")
 
 pred_summary <- cv_preds |>
   group_by(x, y) |>
@@ -8583,7 +8587,7 @@ dev.off()
 
 
 ### Final Figure ------------------------------------------------------------
-fire_occ_cv_preds <- readRDS("cv_fire_occ_predictions.rds")
+fire_occ_cv_preds <- readRDS("Output/cv_fire_occ_predictions.rds")
 
 fire_occ_pred_summary <- fire_occ_cv_preds |>
   group_by(x, y) |>
@@ -8619,7 +8623,7 @@ p1 <- ggplot(fire_occ_pred_summary, aes(x = x, y = y, fill = sd_pred)) +
     subtitle = "Fire occurrence probability"
   )
 
-fire_cai_sd_cv_preds <- readRDS("cv_fire_cai_sd_predictions.rds")
+fire_cai_sd_cv_preds <- readRDS("Output/cv_fire_cai_sd_predictions.rds")
 
 fire_cai_sd_pred_summary <- fire_cai_sd_cv_preds |>
   group_by(x, y) |>
@@ -8655,7 +8659,7 @@ p2 <- ggplot(fire_cai_sd_pred_summary, aes(x = x, y = y, fill = sd_pred)) +
     subtitle = "Fire integrity variation"
   )
 
-fire_circle_mn_cv_preds <- readRDS("cv_fire_circle_mn_predictions.rds")
+fire_circle_mn_cv_preds <- readRDS("Output/cv_fire_circle_mn_predictions.rds")
 
 fire_circle_mn_pred_summary <- fire_circle_mn_cv_preds |>
   group_by(x, y) |>
@@ -8692,7 +8696,7 @@ p3 <- ggplot(fire_circle_mn_pred_summary, aes(x = x, y = y, fill = sd_pred)) +
   )
 
 
-fire_core_mn_cv_preds <- readRDS("cv_fire_core_mn_predictions.rds")
+fire_core_mn_cv_preds <- readRDS("Output/cv_fire_core_mn_predictions.rds")
 
 fire_core_mn_pred_summary <- fire_core_mn_cv_preds |>
   group_by(x, y) |>
@@ -8728,7 +8732,7 @@ p4 <- ggplot(fire_core_mn_pred_summary, aes(x = x, y = y, fill = sd_pred)) +
     subtitle = "Mean fire core size"
   )
 
-fire_dcore_sd_cv_preds <- readRDS("cv_fire_dcore_sd_predictions.rds")
+fire_dcore_sd_cv_preds <- readRDS("Output/cv_fire_dcore_sd_predictions.rds")
 
 fire_dcore_sd_pred_summary <- fire_dcore_sd_cv_preds |>
   group_by(x, y) |>
@@ -8764,7 +8768,7 @@ p5 <- ggplot(fire_dcore_sd_pred_summary, aes(x = x, y = y, fill = sd_pred)) +
     subtitle = "Fire cohesion variation"
   )
 
-fire_enn_sd_cv_preds <- readRDS("cv_fire_enn_sd_predictions.rds")
+fire_enn_sd_cv_preds <- readRDS("Output/cv_fire_enn_sd_predictions.rds")
 
 fire_enn_sd_pred_summary <- fire_enn_sd_cv_preds |>
   group_by(x, y) |>
@@ -8800,7 +8804,7 @@ p6 <- ggplot(fire_enn_sd_pred_summary, aes(x = x, y = y, fill = sd_pred)) +
     subtitle = "Fire isolation variation"
   )
 
-fire_pd_cv_preds <- readRDS("cv_fire_pd_predictions.rds")
+fire_pd_cv_preds <- readRDS("Output/cv_fire_pd_predictions.rds")
 
 fire_pd_pred_summary <- fire_pd_cv_preds |>
   group_by(x, y) |>
@@ -8836,7 +8840,7 @@ p7 <- ggplot(fire_pd_pred_summary, aes(x = x, y = y, fill = sd_pred)) +
     subtitle = "Fire density"
   )
 
-fire_split_cv_preds <- readRDS("cv_fire_split_predictions.rds")
+fire_split_cv_preds <- readRDS("Output/cv_fire_split_predictions.rds")
 
 fire_split_pred_summary <- fire_split_cv_preds |>
   group_by(x, y) |>
@@ -8926,7 +8930,7 @@ ggsave(
 # Cluster analysis --------------------------------------------------------
 
 fire_occ_df <- readRDS(
-  "~/Documents/mapbiomas_fogo_4/BINARY_MONTHLY_RASTERS/METRICS_RDS_FILES/FILTERED/final_fire_occ_data.rds"
+  "Data/final_fire_occ_data.rds"
 )
 fire_occ_df <- lazy_dt(fire_occ_df)
 
@@ -8947,7 +8951,7 @@ wide_fire_occ_m <- fire_occ_m %>%
 skim(wide_fire_occ_m)
 
 fire_metrics_df <- readRDS(
-  "~/Documents/mapbiomas_fogo_4/BINARY_MONTHLY_RASTERS/METRICS_RDS_FILES/FILTERED/final_clean_data.rds"
+  "Data/final_clean_data.rds"
 )
 
 fire_metrics_df <- dtplyr::lazy_dt(fire_metrics_df, immutable = FALSE)
@@ -9110,8 +9114,8 @@ mod <- Mclust(
 summary(mod)
 mod[["parameters"]][["mean"]] # mean values of clusters
 
-saveRDS(mod, "Mclust_model.rds")
-mod <- readRDS("Mclust_model.rds")
+saveRDS(mod, "Output/Mclust_model.rds")
+mod <- readRDS("Output/Mclust_model.rds")
 # Run on your original Mclust model (mod)
 combi <- clustCombi(mod)
 summary(combi)
@@ -9148,7 +9152,7 @@ ggplot(pred_df, aes(x = x, y = y, fill = class)) +
   scale_fill_viridis(option = "turbo")
 dev.off()
 
-saveRDS(pred_df, "predictors_fire_regimes_df.rds")
+saveRDS(pred_df, "Output/predictors_fire_regimes_df.rds")
 
 # Pivot longer for plotting
 long_pred_df <- pred_df %>%
@@ -10089,7 +10093,7 @@ dev.off()
 
 # Land use for each fire regime -------------------------------------------
 
-fire_occ_df <- readRDS("fire_occ_df_modeling.rds")
+fire_occ_df <- readRDS("Data/fire_occ_df_modeling.rds")
 names(fire_occ_df[, c(1:5, 17:34)])
 land_df <- fire_occ_df[, c(1:5, 17:34)]
 land_df <- lazy_dt(land_df)
@@ -11051,7 +11055,7 @@ print(posthoc_transitions)
 
 write.csv(
   posthoc_transitions,
-  "results/posthoc_dec_1_2_transitions.csv",
+  "Output/results/posthoc_dec_1_2_transitions.csv",
   row.names = FALSE
 )
 
@@ -11124,7 +11128,7 @@ print(posthoc_transitions)
 
 write.csv(
   posthoc_transitions,
-  "results/posthoc_dec_2_3_transitions.csv",
+  "Output/results/posthoc_dec_2_3_transitions.csv",
   row.names = FALSE
 )
 
@@ -11198,7 +11202,7 @@ print(posthoc_transitions)
 
 write.csv(
   posthoc_transitions,
-  "results/posthoc_dec_3_4_transitions.csv",
+  "Output/results/posthoc_dec_3_4_transitions.csv",
   row.names = FALSE
 )
 
@@ -11217,7 +11221,7 @@ dev.off()
 
 ##### 1st - 2nd decades -------------------------------------------------------
 
-transitions <- read.csv("results/posthoc_dec_1_2_transitions.csv")
+transitions <- read.csv("Output/results/posthoc_dec_1_2_transitions.csv")
 
 
 symmetry_summary <- transitions %>% # full table, no |z| filter
@@ -11243,7 +11247,7 @@ print(symmetry_summary)
 
 write.csv(
   symmetry_summary,
-  "results/posthoc_dec_1_2_symmetrey.csv",
+  "Output/results/posthoc_dec_1_2_symmetrey.csv",
   row.names = FALSE
 )
 
@@ -11258,7 +11262,7 @@ symmetry_summary %>%
 
 ##### 2nd - 3rd decades -------------------------------------------------------
 
-transitions <- read.csv("results/posthoc_dec_2_3_transitions.csv")
+transitions <- read.csv("Output/results/posthoc_dec_2_3_transitions.csv")
 
 symmetry_summary <- transitions %>% # full table, no |z| filter
   filter(from != to) %>%
@@ -11283,7 +11287,7 @@ print(symmetry_summary)
 
 write.csv(
   symmetry_summary,
-  "results/posthoc_dec_2_3_symmetrey.csv",
+  "Output/results/posthoc_dec_2_3_symmetrey.csv",
   row.names = FALSE
 )
 
@@ -11299,7 +11303,7 @@ symmetry_summary %>%
 
 ##### 3rd-4th decades -------------------------------------------------------
 
-transitions <- read.csv("results/posthoc_dec_3_4_transitions.csv")
+transitions <- read.csv("Output/results/posthoc_dec_3_4_transitions.csv")
 
 symmetry_summary <- transitions %>% # full table, no |z| filter
   filter(from != to) %>%
@@ -11324,7 +11328,7 @@ print(symmetry_summary)
 
 write.csv(
   symmetry_summary,
-  "results/posthoc_dec_3_4_symmetrey.csv",
+  "Output/results/posthoc_dec_3_4_symmetrey.csv",
   row.names = FALSE
 )
 
@@ -11615,7 +11619,7 @@ ggsave(
 # Land use and cover PCA -------------------------------------------------------
 
 fire_occ_df <- readRDS(
-  "~/Documents/mapbiomas_fogo_4/BINARY_MONTHLY_RASTERS/METRICS_RDS_FILES/FILTERED/final_fire_occ_data.rds"
+  "Data/final_fire_occ_data.rds"
 )
 fire_occ_df <- lazy_dt(fire_occ_df)
 
@@ -11637,7 +11641,7 @@ skim(wide_fire_occ_m)
 
 
 fire_metrics_df <- readRDS(
-  "~/Documents/mapbiomas_fogo_4/BINARY_MONTHLY_RASTERS/METRICS_RDS_FILES/FILTERED/final_clean_data.rds"
+  "Data/final_clean_data.rds"
 )
 fire_metrics_df <- lazy_dt(fire_metrics_df)
 
@@ -11660,7 +11664,7 @@ fire_metrics_m <- fire_metrics_df %>%
 
 skim(fire_metrics_m)
 
-mod <- readRDS("Mclust_model.rds")
+mod <- readRDS("Output/Mclust_model.rds")
 mod$data
 
 ModPred <- predict.Mclust(mod) # prediction
@@ -11669,7 +11673,7 @@ fire_m <- na.omit(fire_m)
 
 pred_df <- data.frame(fire_m, class = ModPred$classification)
 
-fire_occ_df <- readRDS("fire_occ_df_modeling.rds")
+fire_occ_df <- readRDS("Data/fire_occ_df_modeling.rds")
 names(fire_occ_df[, c(1:5, 17:34)])
 land_df <- fire_occ_df[, c(1:5, 17:34)]
 land_df <- lazy_dt(land_df)
@@ -11925,7 +11929,7 @@ dev.off()
 
 ## Fire occurrence ---------------------------------------------------------
 
-fire_occ_df <- readRDS("fire_occ_df_modeling.rds")
+fire_occ_df <- readRDS("Data/fire_occ_df_modeling.rds")
 
 # --- 1. Prepare Data with dtplyr ---
 
@@ -12109,7 +12113,7 @@ pdf("Figs/fire_occ_sptrend.pdf", paper = "a4r", width = 0, height = 0)
 dev.off()
 
 ## Fire metrics ---------------------------------------------------------
-fire_metrics_df <- readRDS("fire_metrics_df_modeling.rds")
+fire_metrics_df <- readRDS("Data/fire_metrics_df_modeling.rds")
 
 fire_metrics_df <- lazy_dt(fire_metrics_df)
 
@@ -12926,7 +12930,7 @@ ggsave(
 # Land use map (2024) --------------------------------------------
 
 # Load the Cerrado geometry
-Cerrado <- readRDS("Cerrado.rds")
+Cerrado <- readRDS("Data/Cerrado.rds")
 print(Cerrado)
 
 # --- Define a metric projection for Brazil ---
@@ -12938,7 +12942,7 @@ Cerrado <- Cerrado %>% dplyr::select(geometry)
 Cerrado <- sf::st_transform(Cerrado, metric_crs)
 Cerrado <- st_simplify(Cerrado, dTolerance = 1000)
 
-fire_occ_df <- readRDS("fire_occ_df_modeling.rds")
+fire_occ_df <- readRDS("Data/fire_occ_df_modeling.rds")
 
 legend_dt <- read.delim2(
   "~/Downloads/Codigos-da-legenda-colecao-10.csv"
