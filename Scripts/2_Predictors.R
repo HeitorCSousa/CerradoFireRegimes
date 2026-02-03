@@ -36,11 +36,11 @@ lulc_timeseries_terra <- rast(all_lulc_files)
 print(lulc_timeseries_terra)
 
 legend_dt <- read.delim2(
-  "~/Documents/mapbiomas_lulc_10/Codigos-da-legenda-colecao-10.csv"
+  "Data/Codigos-da-legenda-colecao-10.csv"
 )
 
 # Load the Cerrado geometry
-Cerrado <- readRDS("Cerrado.rds")
+Cerrado <- readRDS("Data/Cerrado.rds")
 print(Cerrado)
 
 # Select only the geometry object from "Cerrado"
@@ -71,7 +71,7 @@ grid_9km <- terra::rast(
 # This is the key step: convert the grid cells to polygons for sampling
 grid_polygons <- terra::as.polygons(grid_9km, dissolve = FALSE)
 
-terra::writeVector(grid_polygons, "grid_polygons.shp")
+terra::writeVector(grid_polygons, "Data/grid_polygons.shp")
 
 # Define a path for the yearly output files
 output_folder <- "~/Documents/mapbiomas_lulc_10/yearly_lulc_results/"
@@ -433,7 +433,7 @@ summary(lulc_with_area)
 
 saveRDS(
   lulc_with_area,
-  "~/Documents/mapbiomas_lulc_10/yearly_lulc_results/lulc_predictors.rds"
+  "Data/lulc_predictors.rds"
 )
 
 
@@ -463,7 +463,7 @@ template_raster <- terra::project(
 )
 
 # Load the Cerrado geometry
-Cerrado <- readRDS("Cerrado.rds")
+Cerrado <- readRDS("Data/Cerrado.rds")
 print(Cerrado)
 
 # Select only the geometry object from "Cerrado"
@@ -514,7 +514,7 @@ names(ndvi_timeseries_df) <- c(
 summary(ndvi_timeseries_df)
 
 # Save data
-saveRDS(ndvi_timeseries_df, "~/Documents/Cerrado_NDVI/ndvi_predictor.rds")
+saveRDS(ndvi_timeseries_df, "Data/ndvi_predictor.rds")
 
 
 # Population density ------------------------------------------------------
@@ -525,7 +525,7 @@ pop_grid_terra <- rast(pop_grid)
 print(pop_grid_terra)
 
 names(pop_grid_terra)
-Cerrado <- readRDS("Cerrado.rds")
+Cerrado <- readRDS("Data/Cerrado.rds")
 print(Cerrado)
 
 # Select only the geometry object from "Cerrado"
@@ -631,7 +631,7 @@ names(pop_timeseries_df) <- c("plot_id", "longitude", "latitude", "year", "pop")
 summary(pop_timeseries_df)
 
 # Save data
-saveRDS(pop_timeseries_df, "Modelling/pop_predictor.rds")
+saveRDS(pop_timeseries_df, "Data/pop_predictor.rds")
 
 
 # Climate -----------------------------------------------------------------
@@ -709,7 +709,7 @@ water_deficit <- terra::project(
 # Crop and mask for Cerrado
 
 # Load the Cerrado geometry
-Cerrado <- readRDS("Cerrado.rds")
+Cerrado <- readRDS("Data/Cerrado.rds")
 print(Cerrado)
 
 # Select only the geometry object from "Cerrado"
@@ -797,7 +797,7 @@ for (var_name in names(raster_list)) {
 
 saveRDS(
   all_variable_summaries,
-  "~/Documents/ERA5/climate_variable_results/list_climate_predictors.rds"
+  "Data/list_climate_predictors.rds"
 )
 lapply(all_variable_summaries, nrow)
 lapply(all_variable_summaries, summary)
@@ -846,7 +846,7 @@ summary(final_climate_dt_complete)
 # Save results
 saveRDS(
   final_climate_dt_complete,
-  "~/Documents/ERA5/climate_variable_results/climate_predictors.rds"
+  "Data/climate_predictors.rds"
 )
 
 
@@ -857,7 +857,7 @@ saveRDS(
 # 'z=9' provides a good resolution (~500m) for regional analysis.
 # We'll project it directly to our target CRS.
 # Load the Cerrado geometry
-Cerrado <- readRDS("Cerrado.rds")
+Cerrado <- readRDS("Data/Cerrado.rds")
 print(Cerrado)
 
 # Select only the geometry object from "Cerrado"
@@ -897,4 +897,4 @@ setnames(terrain_dt, "cell", "plot_id")
 glimpse(terrain_dt)
 
 # Save results
-saveRDS(terrain_dt, "~/Documents/Terrain/terrain_predictors.rds")
+saveRDS(terrain_dt, "Data/terrain_predictors.rds")
