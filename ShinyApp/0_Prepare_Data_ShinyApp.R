@@ -7,8 +7,10 @@ library(skimr)
 library(ggplot2)
 library(viridis)
 library(terra)
+library(geobr)
+library(sf)
 
-fire_occ_df <- readRDS("~/Downloads/final_fire_occ_data.rds")
+fire_occ_df <- readRDS("Data/final_fire_occ_data.rds")
 fire_occ_df <- lazy_dt(fire_occ_df)
 
 fire_occ_m <- fire_occ_df %>%
@@ -28,7 +30,7 @@ wide_fire_occ_m <- fire_occ_m %>%
 skim(wide_fire_occ_m)
 
 
-fire_metrics_df <- readRDS("~/Downloads/final_clean_data.rds")
+fire_metrics_df <- readRDS("Data/final_clean_data.rds")
 fire_metrics_df <- lazy_dt(fire_metrics_df)
 
 # Standardize names and variables
@@ -50,7 +52,7 @@ fire_metrics_m <- fire_metrics_df %>%
 
 skim(fire_metrics_m)
 
-mod <- readRDS("Mclust_model.rds")
+mod <- readRDS("Output/Mclust_model.rds")
 mod$data
 
 ModPred <- predict.Mclust(mod) # prediction
@@ -387,214 +389,498 @@ save_raster_from_df <- function(df, target_col, filename) {
 }
 
 # Global Model
-save_raster_from_df(pred_df, "class", "Fire_Regimes_Global.tif")
-save_raster_from_df(pred_df, "X1", "Fire_Freq_Jan.tif")
-save_raster_from_df(pred_df, "X2", "Fire_Freq_Feb.tif")
-save_raster_from_df(pred_df, "X3", "Fire_Freq_Mar.tif")
-save_raster_from_df(pred_df, "X4", "Fire_Freq_Apr.tif")
-save_raster_from_df(pred_df, "X5", "Fire_Freq_May.tif")
-save_raster_from_df(pred_df, "X6", "Fire_Freq_Jun.tif")
-save_raster_from_df(pred_df, "X7", "Fire_Freq_Jul.tif")
-save_raster_from_df(pred_df, "X8", "Fire_Freq_Aug.tif")
-save_raster_from_df(pred_df, "X9", "Fire_Freq_Sep.tif")
-save_raster_from_df(pred_df, "X10", "Fire_Freq_Oct.tif")
-save_raster_from_df(pred_df, "X11", "Fire_Freq_Nov.tif")
-save_raster_from_df(pred_df, "X12", "Fire_Freq_Dec.tif")
-save_raster_from_df(pred_df, "lsm_c_cai_sd", "Fire_Integrity_Var.tif")
-save_raster_from_df(pred_df, "lsm_c_circle_mn", "Fire_Shape_Reg.tif")
-save_raster_from_df(pred_df, "lsm_c_core_mn", "Fire_Core_Size.tif")
+save_raster_from_df(
+  pred_df,
+  "class",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_Global.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X1",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Jan.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X2",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Feb.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X3",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Mar.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X4",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Apr.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X5",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_May.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X6",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Jun.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X7",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Jul.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X8",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Aug.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X9",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Sep.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X10",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Oct.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X11",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Nov.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "X12",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Freq_Dec.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "lsm_c_cai_sd",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Integrity_Var.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "lsm_c_circle_mn",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Shape_Reg.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "lsm_c_core_mn",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Core_Size.tif"
+)
 
-save_raster_from_df(pred_df, "lsm_c_dcore_sd", "Fire_Internal_Heterog.tif")
-save_raster_from_df(pred_df, "lsm_c_enn_sd", "Fire_Isolation_Var.tif")
-save_raster_from_df(pred_df, "lsm_c_pd", "Fire_Density.tif")
-save_raster_from_df(pred_df, "lsm_c_split", "Fire_Fragmentation.tif")
+save_raster_from_df(
+  pred_df,
+  "lsm_c_dcore_sd",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Internal_Heterog.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "lsm_c_enn_sd",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Isolation_Var.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "lsm_c_pd",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Density.tif"
+)
+save_raster_from_df(
+  pred_df,
+  "lsm_c_split",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Fragmentation.tif"
+)
 
 
 # 3. Save the Decades
-save_raster_from_df(fire_1stdec_pred_df, "class", "Fire_Regimes_1985_1994.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X1", "Fire1985_1994_Freq_Jan.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X2", "Fire1985_1994_Freq_Feb.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X3", "Fire1985_1994_Freq_Mar.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X4", "Fire1985_1994_Freq_Apr.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X5", "Fire1985_1994_Freq_May.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X6", "Fire1985_1994_Freq_Jun.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X7", "Fire1985_1994_Freq_Jul.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X8", "Fire1985_1994_Freq_Aug.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X9", "Fire1985_1994_Freq_Sep.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X10", "Fire1985_1994_Freq_Oct.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X11", "Fire1985_1994_Freq_Nov.tif")
-save_raster_from_df(fire_1stdec_pred_df, "X12", "Fire1985_1994_Freq_Dec.tif")
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "class",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_1985_1994.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X1",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Jan.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X2",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Feb.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X3",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Mar.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X4",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Apr.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X5",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_May.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X6",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Jun.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X7",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Jul.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X8",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Aug.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X9",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Sep.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X10",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Oct.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X11",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Nov.tif"
+)
+save_raster_from_df(
+  fire_1stdec_pred_df,
+  "X12",
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Freq_Dec.tif"
+)
 save_raster_from_df(
   fire_1stdec_pred_df,
   "lsm_c_cai_sd",
-  "Fire1985_1994_Integrity_Var.tif"
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Integrity_Var.tif"
 )
 save_raster_from_df(
   fire_1stdec_pred_df,
   "lsm_c_circle_mn",
-  "Fire1985_1994_Shape_Reg.tif"
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Shape_Reg.tif"
 )
 save_raster_from_df(
   fire_1stdec_pred_df,
   "lsm_c_dcore_sd",
-  "Fire1985_1994_Internal_Heterog.tif"
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Internal_Heterog.tif"
 )
 save_raster_from_df(
   fire_1stdec_pred_df,
   "lsm_c_enn_sd",
-  "Fire1985_1994_Isolation_Var.tif"
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Isolation_Var.tif"
 )
 save_raster_from_df(
   fire_1stdec_pred_df,
   "lsm_c_pd",
-  "Fire1985_1994_Density.tif"
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Density.tif"
 )
 save_raster_from_df(
   fire_1stdec_pred_df,
   "lsm_c_split",
-  "Fire1985_1994_Fragmentation.tif"
+  "Output/Decadal_Fire_Metrics/Fire1985_1994_Fragmentation.tif"
 )
 
-save_raster_from_df(fire_2nddec_pred_df, "class", "Fire_Regimes_1995_2004.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X1", "Fire1995_2004_Freq_Jan.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X2", "Fire1995_2004_Freq_Feb.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X3", "Fire1995_2004_Freq_Mar.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X4", "Fire1995_2004_Freq_Apr.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X5", "Fire1995_2004_Freq_May.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X6", "Fire1995_2004_Freq_Jun.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X7", "Fire1995_2004_Freq_Jul.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X8", "Fire1995_2004_Freq_Aug.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X9", "Fire1995_2004_Freq_Sep.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X10", "Fire1995_2004_Freq_Oct.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X11", "Fire1995_2004_Freq_Nov.tif")
-save_raster_from_df(fire_2nddec_pred_df, "X12", "Fire1995_2004_Freq_Dec.tif")
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "class",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_1995_2004.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X1",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Jan.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X2",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Feb.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X3",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Mar.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X4",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Apr.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X5",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_May.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X6",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Jun.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X7",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Jul.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X8",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Aug.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X9",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Sep.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X10",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Oct.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X11",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Nov.tif"
+)
+save_raster_from_df(
+  fire_2nddec_pred_df,
+  "X12",
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Freq_Dec.tif"
+)
 save_raster_from_df(
   fire_2nddec_pred_df,
   "lsm_c_cai_sd",
-  "Fire1995_2004_Integrity_Var.tif"
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Integrity_Var.tif"
 )
 save_raster_from_df(
   fire_2nddec_pred_df,
   "lsm_c_circle_mn",
-  "Fire1995_2004_Shape_Reg.tif"
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Shape_Reg.tif"
 )
 save_raster_from_df(
   fire_2nddec_pred_df,
   "lsm_c_dcore_sd",
-  "Fire1995_2004_Internal_Heterog.tif"
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Internal_Heterog.tif"
 )
 save_raster_from_df(
   fire_2nddec_pred_df,
   "lsm_c_enn_sd",
-  "Fire1995_2004_Isolation_Var.tif"
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Isolation_Var.tif"
 )
 save_raster_from_df(
   fire_2nddec_pred_df,
   "lsm_c_pd",
-  "Fire1995_2004_Density.tif"
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Density.tif"
 )
 save_raster_from_df(
   fire_2nddec_pred_df,
   "lsm_c_split",
-  "Fire1995_2004_Fragmentation.tif"
+  "Output/Decadal_Fire_Metrics/Fire1995_2004_Fragmentation.tif"
 )
 
-save_raster_from_df(fire_3rddec_pred_df, "class", "Fire_Regimes_2005_2014.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X1", "Fire2005_2014_Freq_Jan.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X2", "Fire2005_2014_Freq_Feb.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X3", "Fire2005_2014_Freq_Mar.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X4", "Fire2005_2014_Freq_Apr.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X5", "Fire2005_2014_Freq_May.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X6", "Fire2005_2014_Freq_Jun.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X7", "Fire2005_2014_Freq_Jul.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X8", "Fire2005_2014_Freq_Aug.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X9", "Fire2005_2014_Freq_Sep.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X10", "Fire2005_2014_Freq_Oct.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X11", "Fire2005_2014_Freq_Nov.tif")
-save_raster_from_df(fire_3rddec_pred_df, "X12", "Fire2005_2014_Freq_Dec.tif")
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "class",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_2005_2014.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X1",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Jan.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X2",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Feb.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X3",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Mar.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X4",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Apr.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X5",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_May.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X6",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Jun.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X7",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Jul.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X8",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Aug.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X9",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Sep.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X10",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Oct.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X11",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Nov.tif"
+)
+save_raster_from_df(
+  fire_3rddec_pred_df,
+  "X12",
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Freq_Dec.tif"
+)
 save_raster_from_df(
   fire_3rddec_pred_df,
   "lsm_c_cai_sd",
-  "Fire2005_2014_Integrity_Var.tif"
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Integrity_Var.tif"
 )
 save_raster_from_df(
   fire_3rddec_pred_df,
   "lsm_c_circle_mn",
-  "Fire2005_2014_Shape_Reg.tif"
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Shape_Reg.tif"
 )
 save_raster_from_df(
   fire_3rddec_pred_df,
   "lsm_c_dcore_sd",
-  "Fire2005_2014_Internal_Heterog.tif"
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Internal_Heterog.tif"
 )
 save_raster_from_df(
   fire_3rddec_pred_df,
   "lsm_c_enn_sd",
-  "Fire2005_2014_Isolation_Var.tif"
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Isolation_Var.tif"
 )
 save_raster_from_df(
   fire_3rddec_pred_df,
   "lsm_c_pd",
-  "Fire2005_2014_Density.tif"
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Density.tif"
 )
 save_raster_from_df(
   fire_3rddec_pred_df,
   "lsm_c_split",
-  "Fire2005_2014_Fragmentation.tif"
+  "Output/Decadal_Fire_Metrics/Fire2005_2014_Fragmentation.tif"
 )
 
-save_raster_from_df(fire_4thdec_pred_df, "class", "Fire_Regimes_2015_2024.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X1", "Fire2015_2024_Freq_Jan.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X2", "Fire2015_2024_Freq_Feb.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X3", "Fire2015_2024_Freq_Mar.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X4", "Fire2015_2024_Freq_Apr.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X5", "Fire2015_2024_Freq_May.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X6", "Fire2015_2024_Freq_Jun.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X7", "Fire2015_2024_Freq_Jul.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X8", "Fire2015_2024_Freq_Aug.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X9", "Fire2015_2024_Freq_Sep.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X10", "Fire2015_2024_Freq_Oct.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X11", "Fire2015_2024_Freq_Nov.tif")
-save_raster_from_df(fire_4thdec_pred_df, "X12", "Fire2015_2024_Freq_Dec.tif")
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "class",
+  "ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_2015_2024.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X1",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Jan.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X2",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Feb.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X3",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Mar.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X4",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Apr.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X5",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_May.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X6",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Jun.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X7",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Jul.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X8",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Aug.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X9",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Sep.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X10",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Oct.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X11",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Nov.tif"
+)
+save_raster_from_df(
+  fire_4thdec_pred_df,
+  "X12",
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Freq_Dec.tif"
+)
 save_raster_from_df(
   fire_4thdec_pred_df,
   "lsm_c_cai_sd",
-  "Fire2015_2024_Integrity_Var.tif"
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Integrity_Var.tif"
 )
 save_raster_from_df(
   fire_4thdec_pred_df,
   "lsm_c_circle_mn",
-  "Fire2015_2024_Shape_Reg.tif"
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Shape_Reg.tif"
 )
 save_raster_from_df(
   fire_4thdec_pred_df,
   "lsm_c_dcore_sd",
-  "Fire2015_2024_Internal_Heterog.tif"
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Internal_Heterog.tif"
 )
 save_raster_from_df(
   fire_4thdec_pred_df,
   "lsm_c_enn_sd",
-  "Fire2015_2024_Isolation_Var.tif"
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Isolation_Var.tif"
 )
 save_raster_from_df(
   fire_4thdec_pred_df,
   "lsm_c_pd",
-  "Fire2015_2024_Density.tif"
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Density.tif"
 )
 save_raster_from_df(
   fire_4thdec_pred_df,
   "lsm_c_split",
-  "Fire2015_2024_Fragmentation.tif"
+  "Output/Decadal_Fire_Metrics/Fire2015_2024_Fragmentation.tif"
 )
 
-library(geobr)
-library(sf)
-library(terra)
-library(dplyr)
 
 # 1. Load your Global Raster (To get the Cerrado Extent)
 # We need this to crop the vectors so we don't load the whole Amazon
-ref_raster <- rast("Fire_Regimes_Global.tif")
+ref_raster <- rast("ShinyApp/CerradoFireRegimes_DSS/Fire_Regimes_Global.tif")
 
 # Create a bounding box polygon of your raster
 cerrado_bbox <- st_as_sf(as.polygons(ext(ref_raster), crs = "EPSG:5880"))
@@ -637,5 +923,5 @@ vector_data <- list(
   tis = tis
 )
 
-saveRDS(vector_data, "vectors_cerrado.rds")
+saveRDS(vector_data, "ShinyApp/CerradoFireRegimes_DSS/vectors_cerrado.rds")
 message("Done! 'vectors_cerrado.rds' created. Put this in your Shiny folder.")
