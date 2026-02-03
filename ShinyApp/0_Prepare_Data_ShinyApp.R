@@ -1,3 +1,5 @@
+rm(list = ls())
+
 # Prepare data for Shiny App
 library(dtplyr)
 library(mclust)

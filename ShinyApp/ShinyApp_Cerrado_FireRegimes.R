@@ -1,3 +1,7 @@
+rm(list = ls())
+
+# --- 0. LOAD PACKAGES ---------------------------------------------------------
+
 library(shiny)
 library(leaflet)
 library(terra)

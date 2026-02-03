@@ -1,3 +1,5 @@
+rm(list = ls())
+
 # LOAD PACKAGES ---------------------------------------------
 
 library(terra)
