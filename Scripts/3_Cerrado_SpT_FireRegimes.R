@@ -49,7 +49,7 @@ library(ggspatial) # For North Arrow & Scale Bar
 library(scales) # For axis label formatting
 
 # Load the Cerrado geometry
-Cerrado <- readRDS("Cerrado.rds")
+Cerrado <- readRDS("Data/Cerrado.rds")
 print(Cerrado)
 
 # --- Define a metric projection for Brazil ---
@@ -65,11 +65,11 @@ Cerrado <- sf::st_transform(Cerrado, metric_crs)
 ## Land use and land cover -------------------------------------------------
 
 legend_dt <- read.delim2(
-  "~/Documents/mapbiomas_lulc_10/Codigos-da-legenda-colecao-10.csv"
+  "Data/Codigos-da-legenda-colecao-10.csv"
 )
 
 lulc_df <- readRDS(
-  "~Data/lulc_predictors.rds"
+  "Data/lulc_predictors.rds"
 )
 
 grid_polygons <- terra::vect("grid_polygons.shp")
@@ -12946,7 +12946,7 @@ Cerrado <- st_simplify(Cerrado, dTolerance = 1000)
 fire_occ_df <- readRDS("Data/fire_occ_df_modeling.rds")
 
 legend_dt <- read.delim2(
-  "~/Downloads/Codigos-da-legenda-colecao-10.csv"
+  "Data/Codigos-da-legenda-colecao-10.csv"
 )
 
 
