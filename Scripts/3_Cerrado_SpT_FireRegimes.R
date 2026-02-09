@@ -9875,22 +9875,6 @@ p11 <- p11 + theme(legend.position = "none")
 p12 <- p12 + theme(legend.position = "none")
 
 
-# Tag panels
-
-p1 <- p1 + labs(tag = "A")
-p2 <- p2 + labs(tag = "B")
-p3 <- p3 + labs(tag = "C")
-p4 <- p4 + labs(tag = "D")
-p5 <- p5 + labs(tag = "E")
-p6 <- p6 + labs(tag = "F")
-p7 <- p7 + labs(tag = "G")
-p8 <- p8 + labs(tag = "H")
-p9 <- p9 + labs(tag = "I")
-p10 <- p10 + labs(tag = "J")
-p11 <- p11 + labs(tag = "K")
-p12 <- p12 + labs(tag = "L")
-
-
 # Final figure
 final_fig <-
   (p1 | p2 | p3 | p4) /
@@ -12069,13 +12053,16 @@ final_map_data <- inner_join(results_df, coords, by = "plot_id")
 limits <- quantile(final_map_data$Trend, probs = c(0.01, 0.99), na.rm = TRUE)
 max_abs <- max(abs(limits)) # Make it symmetric around 0
 
+x_lim <- st_bbox(Cerrado$geometry)[c(1, 3)]
+y_lim <- st_bbox(Cerrado$geometry)[c(2, 4)]
 
 pdf("Figs/fire_occ_sptrend.pdf", paper = "a4r", width = 0, height = 0)
 (p1 <- ggplot(final_map_data, aes(x = x, y = y, fill = Trend)) +
+  geom_sf(data = Cerrado, inherit.aes = F, fill = gray(0.9, 0.5), color = NA) +
   geom_tile(aes(alpha = -log10(P_Value))) +
   scale_fill_gradient2(
     low = viridis(2)[1],
-    mid = "white",
+    mid = gray(0.9, 0.5),
     high = viridis(2)[2],
     midpoint = 0,
     limits = c(-max_abs, max_abs),
@@ -12099,11 +12086,11 @@ pdf("Figs/fire_occ_sptrend.pdf", paper = "a4r", width = 0, height = 0)
       )
     )
   ) +
-  coord_fixed() +
+  coord_sf(crs = metric_crs, xlim = x_lim, ylim = y_lim, expand = FALSE) +
   # Alpha Scale (Control the fade)
   scale_alpha_continuous(
     range = c(0, 1), # 0 = Invisible, 1 = Solid
-    limits = c(0, 7), # Cap confidence at P = 0.001 (10^-3)
+    limits = c(0, 3), # Cap confidence at P = 0.001 (10^-3)
     oob = scales::squish, # Anything P < 0.001 stays fully opaque
     name = "Confidence\n(-log10 P)"
   ) +
@@ -12252,11 +12239,11 @@ final_map_data <- inner_join(results_df, coords, by = "plot_id")
 
 pdf("Figs/fire_cai_sd_sptrend.pdf", paper = "a4r", width = 0, height = 0)
 (p2 <- ggplot(final_map_data, aes(x = x, y = y, fill = exp(Trend) - 1)) +
+  geom_sf(data = Cerrado, inherit.aes = F, fill = gray(0.9, 0.5), color = NA) +
   geom_tile(aes(alpha = -log10(P_Value))) +
-
   scale_fill_gradient2(
     low = viridis(2)[1],
-    mid = "white",
+    mid = gray(0.9, 0.5),
     high = viridis(2)[2],
     midpoint = 0,
     limits = quantile(
@@ -12284,11 +12271,11 @@ pdf("Figs/fire_cai_sd_sptrend.pdf", paper = "a4r", width = 0, height = 0)
       )
     )
   ) +
-  coord_fixed() +
+  coord_sf(crs = metric_crs, xlim = x_lim, ylim = y_lim, expand = FALSE) +
   # Alpha Scale (Control the fade)
   scale_alpha_continuous(
     range = c(0, 1), # 0 = Invisible, 1 = Solid
-    limits = c(0, 7), # Cap confidence at P = 0.001 (10^-3)
+    limits = c(0, 3), # Cap confidence at P = 0.001 (10^-3)
     oob = scales::squish, # Anything P < 0.001 stays fully opaque
     name = "Confidence\n(-log10 P)"
   ) +
@@ -12352,10 +12339,11 @@ final_map_data <- inner_join(results_df, coords, by = "plot_id")
 
 pdf("Figs/fire_circle_mn_sptrend.pdf", paper = "a4r", width = 0, height = 0)
 (p3 <- ggplot(final_map_data, aes(x = x, y = y, fill = exp(Trend) - 1)) +
+  geom_sf(data = Cerrado, inherit.aes = F, fill = gray(0.9, 0.5), color = NA) +
   geom_tile(aes(alpha = -log10(P_Value))) +
   scale_fill_gradient2(
     low = viridis(2)[1],
-    mid = "white",
+    mid = gray(0.9, 0.5),
     high = viridis(2)[2],
     midpoint = 0,
     limits = quantile(
@@ -12383,11 +12371,11 @@ pdf("Figs/fire_circle_mn_sptrend.pdf", paper = "a4r", width = 0, height = 0)
       )
     )
   ) +
-  coord_fixed() +
+  coord_sf(crs = metric_crs, xlim = x_lim, ylim = y_lim, expand = FALSE) +
   # Alpha Scale (Control the fade)
   scale_alpha_continuous(
     range = c(0, 1), # 0 = Invisible, 1 = Solid
-    limits = c(0, 7), # Cap confidence at P = 0.001 (10^-3)
+    limits = c(0, 3), # Cap confidence at P = 0.001 (10^-3)
     oob = scales::squish, # Anything P < 0.001 stays fully opaque
     name = "Confidence\n(-log10 P)"
   ) +
@@ -12452,11 +12440,11 @@ final_map_data <- inner_join(results_df, coords, by = "plot_id")
 
 pdf("Figs/fire_core_mn_sptrend.pdf", paper = "a4r", width = 0, height = 0)
 (p4 <- ggplot(final_map_data, aes(x = x, y = y, fill = exp(Trend) - 1)) +
+  geom_sf(data = Cerrado, inherit.aes = F, fill = gray(0.9, 0.5), color = NA) +
   geom_tile(aes(alpha = -log10(P_Value))) +
-
   scale_fill_gradient2(
     low = viridis(2)[1],
-    mid = "white",
+    mid = gray(0.9, 0.5),
     high = viridis(2)[2],
     midpoint = 0,
     limits = quantile(
@@ -12484,11 +12472,11 @@ pdf("Figs/fire_core_mn_sptrend.pdf", paper = "a4r", width = 0, height = 0)
       )
     )
   ) +
-  coord_fixed() +
+  coord_sf(crs = metric_crs, xlim = x_lim, ylim = y_lim, expand = FALSE) +
   # Alpha Scale (Control the fade)
   scale_alpha_continuous(
     range = c(0, 1), # 0 = Invisible, 1 = Solid
-    limits = c(0, 7), # Cap confidence at P = 0.001 (10^-3)
+    limits = c(0, 3), # Cap confidence at P = 0.001 (10^-3)
     oob = scales::squish, # Anything P < 0.001 stays fully opaque
     name = "Confidence\n(-log10 P)"
   ) +
@@ -12553,10 +12541,11 @@ final_map_data <- inner_join(results_df, coords, by = "plot_id")
 
 pdf("Figs/fire_dcore_sd_sptrend.pdf", paper = "a4r", width = 0, height = 0)
 (p5 <- ggplot(final_map_data, aes(x = x, y = y, fill = exp(Trend) - 1)) +
+  geom_sf(data = Cerrado, inherit.aes = F, fill = gray(0.9, 0.5), color = NA) +
   geom_tile(aes(alpha = -log10(P_Value))) +
   scale_fill_gradient2(
     low = viridis(2)[1],
-    mid = "white",
+    mid = gray(0.9, 0.5),
     high = viridis(2)[2],
     midpoint = 0,
     limits = quantile(
@@ -12584,11 +12573,11 @@ pdf("Figs/fire_dcore_sd_sptrend.pdf", paper = "a4r", width = 0, height = 0)
       )
     )
   ) +
-  coord_fixed() +
+  coord_sf(crs = metric_crs, xlim = x_lim, ylim = y_lim, expand = FALSE) +
   # Alpha Scale (Control the fade)
   scale_alpha_continuous(
     range = c(0, 1), # 0 = Invisible, 1 = Solid
-    limits = c(0, 7), # Cap confidence at P = 0.001 (10^-3)
+    limits = c(0, 3), # Cap confidence at P = 0.001 (10^-3)
     oob = scales::squish, # Anything P < 0.001 stays fully opaque
     name = "Confidence\n(-log10 P)"
   ) +
@@ -12653,10 +12642,11 @@ final_map_data <- inner_join(results_df, coords, by = "plot_id")
 
 pdf("Figs/fire_enn_sd_sptrend.pdf", paper = "a4r", width = 0, height = 0)
 (p6 <- ggplot(final_map_data, aes(x = x, y = y, fill = exp(Trend) - 1)) +
+  geom_sf(data = Cerrado, inherit.aes = F, fill = gray(0.9, 0.5), color = NA) +
   geom_tile(aes(alpha = -log10(P_Value))) +
   scale_fill_gradient2(
     low = viridis(2)[1],
-    mid = "white",
+    mid = gray(0.9, 0.5),
     high = viridis(2)[2],
     midpoint = 0,
     limits = quantile(
@@ -12684,11 +12674,11 @@ pdf("Figs/fire_enn_sd_sptrend.pdf", paper = "a4r", width = 0, height = 0)
       )
     )
   ) +
-  coord_fixed() +
+  coord_sf(crs = metric_crs, xlim = x_lim, ylim = y_lim, expand = FALSE) +
   # Alpha Scale (Control the fade)
   scale_alpha_continuous(
     range = c(0, 1), # 0 = Invisible, 1 = Solid
-    limits = c(0, 7), # Cap confidence at P = 0.001 (10^-3)
+    limits = c(0, 3), # Cap confidence at P = 0.001 (10^-3)
     oob = scales::squish, # Anything P < 0.001 stays fully opaque
     name = "Confidence\n(-log10 P)"
   ) +
@@ -12753,10 +12743,11 @@ final_map_data <- inner_join(results_df, coords, by = "plot_id")
 
 pdf("Figs/fire_pd_sptrend.pdf", paper = "a4r", width = 0, height = 0)
 (p7 <- ggplot(final_map_data, aes(x = x, y = y, fill = exp(Trend) - 1)) +
+  geom_sf(data = Cerrado, inherit.aes = F, fill = gray(0.9, 0.5), color = NA) +
   geom_tile(aes(alpha = -log10(P_Value))) +
   scale_fill_gradient2(
     low = viridis(2)[1],
-    mid = "white",
+    mid = gray(0.9, 0.5),
     high = viridis(2)[2],
     midpoint = 0,
     limits = quantile(
@@ -12784,11 +12775,11 @@ pdf("Figs/fire_pd_sptrend.pdf", paper = "a4r", width = 0, height = 0)
       )
     )
   ) +
-  coord_fixed() +
+  coord_sf(crs = metric_crs, xlim = x_lim, ylim = y_lim, expand = FALSE) +
   # Alpha Scale (Control the fade)
   scale_alpha_continuous(
     range = c(0, 1), # 0 = Invisible, 1 = Solid
-    limits = c(0, 7), # Cap confidence at P = 0.001 (10^-3)
+    limits = c(0, 3), # Cap confidence at P = 0.001 (10^-3)
     oob = scales::squish, # Anything P < 0.001 stays fully opaque
     name = "Confidence\n(-log10 P)"
   ) +
@@ -12852,10 +12843,11 @@ final_map_data <- inner_join(results_df, coords, by = "plot_id")
 # Plot
 pdf("Figs/fire_split_sptrend.pdf", paper = "a4r", width = 0, height = 0)
 (p8 <- ggplot(final_map_data, aes(x = x, y = y, fill = exp(Trend) - 1)) +
+  geom_sf(data = Cerrado, inherit.aes = F, fill = gray(0.9, 0.5), color = NA) +
   geom_tile(aes(alpha = -log10(P_Value))) +
   scale_fill_gradient2(
     low = viridis(2)[1],
-    mid = "white",
+    mid = gray(0.9, 0.5),
     high = viridis(2)[2],
     midpoint = 0,
     limits = quantile(
@@ -12883,11 +12875,11 @@ pdf("Figs/fire_split_sptrend.pdf", paper = "a4r", width = 0, height = 0)
       )
     )
   ) +
-  coord_fixed() +
+  coord_sf(crs = metric_crs, xlim = x_lim, ylim = y_lim, expand = FALSE) +
   # Alpha Scale (Control the fade)
   scale_alpha_continuous(
     range = c(0, 1), # 0 = Invisible, 1 = Solid
-    limits = c(0, 7), # Cap confidence at P = 0.001 (10^-3)
+    limits = c(0, 3), # Cap confidence at P = 0.001 (10^-3)
     oob = scales::squish, # Anything P < 0.001 stays fully opaque
     name = "Confidence\n(-log10 P)"
   ) +
